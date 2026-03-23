@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#d5e3fc",
+              "on-secondary-container": "#57657a",
+              "inverse-surface": "#2d3133",
+              "on-primary-fixed-variant": "#003ea8",
+              "on-tertiary-fixed-variant": "#005049",
+              "surface-container-high": "#e6e8ea",
+              "surface-container": "#eceef0",
+              "tertiary-fixed-dim": "#6bd8cb",
+              "error": "#ba1a1a",
+              "surface-container-highest": "#e0e3e5",
+              "error-container": "#ffdad6",
+              "surface-tint": "#0053db",
+              "on-secondary-fixed": "#0d1c2e",
+              "outline-variant": "#c5c5d4",
+              "on-surface-variant": "#454652",
+              "tertiary-container": "#00665d",
+              "on-tertiary-fixed": "#00201d",
+              "on-error-container": "#93000a",
+              "on-error": "#ffffff",
+              "tertiary": "#004c45",
+              "on-tertiary-container": "#78e4d6",
+              "surface": "#f7f9fb",
+              "inverse-primary": "#b4c5ff",
+              "secondary-fixed": "#d5e3fc",
+              "secondary-fixed-dim": "#b9c7df",
+              "tertiary-fixed": "#89f5e7",
+              "on-secondary-fixed-variant": "#3a485b",
+              "primary": "#003aa0",
+              "background": "#f7f9fb",
+              "inverse-on-surface": "#eff1f3",
+              "on-secondary": "#ffffff",
+              "primary-container": "#004fd2",
+              "surface-container-lowest": "#ffffff",
+              "surface-dim": "#d8dadc",
+              "on-background": "#191c1e",
+              "on-primary-container": "#c4d1ff",
+              "outline": "#757684",
+              "on-primary-fixed": "#00174b",
+              "surface-container-low": "#f2f4f6",
+              "surface-bright": "#f7f9fb",
+              "primary-fixed-dim": "#b4c5ff",
+              "on-primary": "#ffffff",
+              "surface-variant": "#e0e3e5",
+              "on-surface": "#191c1e",
+              "primary-fixed": "#dbe1ff",
+              "secondary": "#515f74"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f7f9fb] dark:bg-slate-900 flex items-center justify-between px-8 py-4 w-full max-w-none border-b border-outline-variant/10">
+<div class="flex items-center gap-6">
+<button class="text-[#003aa0] dark:text-blue-400 active:opacity-80 active:scale-95 transition-all lg:hidden">
+<span class="material-symbols-outlined text-3xl" data-icon="menu_open">menu_open</span>
+</button>
+<div class="text-[#191c1e] dark:text-slate-100 font-extrabold tracking-tighter text-2xl font-['Manrope']">Editorial Docs</div>
+</div>
+<div class="hidden md:flex flex-1 max-w-xl mx-12">
+<div class="relative w-full group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="search">search</span>
+</div>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-on-surface-variant/60" placeholder="Search docs..." type="text"/>
+<div class="absolute inset-y-0 right-3 flex items-center">
+<kbd class="hidden sm:inline-block px-2 py-1 text-[10px] font-semibold text-on-surface-variant bg-surface-container-high rounded border border-outline-variant/20 uppercase">Ctrl K</kbd>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-[#e6e8ea] transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+<button class="bg-gradient-to-r from-primary to-primary-container text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-lg shadow-primary/10 hover:opacity-90 active:scale-95 transition-all">
+            Sign In
+        </button>
+</div>
+</header>
+<div class="flex pt-20 min-h-screen">
+<!-- NavigationDrawer (Column 1) -->
+<aside class="h-screen w-72 fixed left-0 top-0 pt-20 bg-[#eceef0] dark:bg-slate-800 flex flex-col gap-1 px-4 hidden lg:flex border-r border-outline-variant/10">
+<div class="px-4 py-6">
+<h3 class="text-lg font-bold text-[#191c1e] dark:text-slate-200 font-['Manrope']">Documentation</h3>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#ffffff] dark:bg-slate-700 text-[#003aa0] dark:text-blue-300 font-bold rounded-lg shadow-sm transition-all duration-300 ease-in-out font-['Inter'] text-[0.875rem] leading-6" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span>Getting Started</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#454652] dark:text-slate-400 hover:text-[#191c1e] hover:bg-[#f2f4f6] dark:hover:bg-slate-700/50 rounded-lg transition-all duration-300 ease-in-out font-['Inter'] text-[0.875rem] leading-6" href="#">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span>Core Concepts</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#454652] dark:text-slate-400 hover:text-[#191c1e] hover:bg-[#f2f4f6] dark:hover:bg-slate-700/50 rounded-lg transition-all duration-300 ease-in-out font-['Inter'] text-[0.875rem] leading-6" href="#">
+<span class="material-symbols-outlined" data-icon="api">api</span>
+<span>API Reference</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#454652] dark:text-slate-400 hover:text-[#191c1e] hover:bg-[#f2f4f6] dark:hover:bg-slate-700/50 rounded-lg transition-all duration-300 ease-in-out font-['Inter'] text-[0.875rem] leading-6" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span>Tutorials</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#454652] dark:text-slate-400 hover:text-[#191c1e] hover:bg-[#f2f4f6] dark:hover:bg-slate-700/50 rounded-lg transition-all duration-300 ease-in-out font-['Inter'] text-[0.875rem] leading-6" href="#">
+<span class="material-symbols-outlined" data-icon="verified">verified</span>
+<span>Best Practices</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 lg:ml-72 bg-surface">
+<div class="max-w-7xl mx-auto px-4 sm:px-8 py-12 lg:px-12 flex flex-col xl:flex-row gap-12">
+<!-- Article Content (Column 2) -->
+<div class="flex-1 max-w-3xl">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-8 text-on-surface-variant text-sm font-medium">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">User Guide</a>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface">Getting Started</span>
+</nav>
+<h1 class="text-4xl sm:text-5xl font-extrabold text-on-surface mb-6 tracking-tight font-headline">Getting Started with our App</h1>
+<p class="text-lg text-on-surface-variant leading-relaxed mb-12 font-body">
+                    Welcome to the official Editorial Architect CMS guide. This comprehensive walkthrough will help you set up your workspace, invite your team, and begin crafting beautiful, high-performance content in minutes. We've designed every interaction to be as intuitive as a well-set page of typography.
+                </p>
+<!-- Section: Intro -->
+<section class="mb-16 scroll-mt-32" id="intro">
+<h2 class="text-2xl font-bold text-primary mb-6 font-headline">Introduction</h2>
+<p class="mb-6 leading-relaxed text-on-surface/90">
+                        The Editorial Architect CMS is built for teams who value clarity over complexity. Unlike traditional bloated platforms, we focus on a "content-first" approach that allows you to structure data without fighting a cumbersome UI.
+                    </p>
+<!-- Image with Asymmetric Caption -->
+<div class="my-10 group">
+<div class="rounded-xl overflow-hidden bg-surface-container relative">
+<img alt="Dashboard Preview" class="w-full h-auto object-cover border border-outline-variant/10" data-alt="Clean modern CMS dashboard interface screenshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWdSrknXoMeuA5BJ-Gxd0ML65liBL8KZ5YxRYVNQC2oQZrVbJD8yozzmBj2wiRjYlw3XujeBbR7I442DsB1xKjpGPVVeYMj6gZ0JM5yEdUpeKGk_DwJoB4Dm5YTNsg2KaYy-_gCjCeQCt-SbeRfz9tm_omOOna9AyuTDzhfgQKdGrFXwHWcoDp1u68mF1oIh7yGQmZGRU3ocniYFSspPbrmqpI30VdGXTAYKUvMCwvy5pQ_AbUAF5hmIc5e5bcRMIUSiba1CUmO1aE"/>
+</div>
+<div class="mt-4 flex justify-end">
+<p class="max-w-[200px] text-[0.75rem] text-on-surface-variant leading-tight border-l-2 border-surface-tint pl-4 py-1 italic font-label">
+                                The main workspace dashboard showing live analytics and project health.
+                            </p>
+</div>
+</div>
+</section>
+<!-- Tip Box -->
+<div class="mb-12 p-8 pl-16 rounded-xl bg-secondary-container text-on-secondary-container relative overflow-hidden flex items-start gap-4">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-5xl opacity-20" data-icon="lightbulb">lightbulb</span>
+<div>
+<p class="font-bold text-lg mb-1">Expert Tip</p>
+<p class="text-sm leading-relaxed">You can use keyboard shortcuts (Cmd + J) to quickly jump between files in the editor without touching your mouse.</p>
+</div>
+</div>
+<!-- Section: Setup -->
+<section class="mb-16 scroll-mt-32" id="setup">
+<h2 class="text-2xl font-bold text-primary mb-6 font-headline">Setup and Commands</h2>
+<p class="mb-6 leading-relaxed">To initialize your local environment, run the following command in your terminal. Ensure you have the latest Node.js runtime installed.</p>
+<!-- Code Block -->
+<div class="relative group my-8">
+<div class="bg-inverse-surface text-inverse-on-surface rounded-xl p-6 font-mono text-sm leading-6 border-l-4 border-primary">
+<div class="flex justify-between items-center mb-4 opacity-50">
+<span class="text-xs uppercase tracking-widest font-bold">Terminal</span>
+<button class="hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="content_copy">content_copy</span>
+</button>
+</div>
+<code class="block">
+<span class="text-primary-fixed-dim">npx</span> editorial-cms init <span class="text-tertiary-fixed-dim">--template</span> modern-blog<br/>
+<span class="text-outline-variant"># Following setup wizard...</span><br/>
+<span class="text-primary-fixed-dim">cd</span> my-project &amp;&amp; <span class="text-primary-fixed-dim">npm</span> start
+                            </code>
+</div>
+</div>
+</section>
+<!-- Section: Security -->
+<section class="mb-16 scroll-mt-32" id="security">
+<!-- Warning Box -->
+<div class="p-8 pl-16 rounded-xl bg-error-container text-on-error-container relative overflow-hidden flex items-start gap-4">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-5xl opacity-20" data-icon="warning">warning</span>
+<div>
+<p class="font-bold text-lg mb-1">Security Notice</p>
+<p class="text-sm leading-relaxed">Never share your API keys or .env files in public repositories. Always use the built-in secret management dashboard for production keys.</p>
+</div>
+</div>
+</section>
+<!-- Pagination -->
+<div class="mt-24 pt-12 border-t border-outline-variant/20 flex flex-col sm:flex-row gap-4 justify-between">
+<a class="group flex items-center gap-4 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_back">arrow_back</span>
+<div class="text-left">
+<span class="block text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-1">Previous</span>
+<span class="text-lg font-bold text-on-surface group-hover:text-primary transition-colors">Introduction</span>
+</div>
+</a>
+<a class="group flex items-center gap-4 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors text-right" href="#">
+<div class="text-right">
+<span class="block text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-1">Next Up</span>
+<span class="text-lg font-bold text-on-surface group-hover:text-primary transition-colors">Login Setup</span>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Table of Contents (Column 3) -->
+<aside class="hidden xl:block w-64 sticky top-32 self-start">
+<div class="p-2">
+<h4 class="text-[0.65rem] font-extrabold uppercase tracking-[0.2em] text-on-surface-variant/60 mb-6 flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                        On this page
+                    </h4>
+<ul class="space-y-1 text-[0.875rem] border-l border-outline-variant/20">
+<li>
+<a class="flex items-center gap-3 py-2 px-4 text-primary font-semibold border-l-2 border-primary -ml-[1.5px] bg-primary/5 rounded-r-lg transition-all duration-200" href="#intro">
+                                Introduction
+                            </a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low border-l-2 border-transparent -ml-[1.5px] rounded-r-lg transition-all duration-200" href="#setup">
+                                Setup and Commands
+                            </a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low border-l-2 border-transparent -ml-[1.5px] rounded-r-lg transition-all duration-200" href="#security">
+                                Security Notice
+                            </a>
+</li>
+</ul>
+<div class="mt-8 pt-6 border-t border-outline-variant/20">
+<button class="w-full flex items-center justify-between text-[0.75rem] font-bold text-on-surface-variant hover:text-primary transition-colors group px-2">
+<span>Edit this page</span>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity" data-icon="edit">edit</span>
+</button>
+<button class="w-full flex items-center justify-between mt-4 text-[0.75rem] font-bold text-on-surface-variant hover:text-primary transition-colors group px-2">
+<span>Feedback</span>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity" data-icon="forum">forum</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+<!-- Footer -->
+<footer class="w-full py-12 mt-24 bg-[#f7f9fb] dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex flex-col items-center gap-4">
+<div class="flex gap-8 mb-4">
+<a class="font-['Inter'] text-xs text-[#454652] dark:text-slate-500 hover:text-[#191c1e] dark:hover:text-slate-300 transition-colors underline text-[#003aa0]" href="#">Privacy Policy</a>
+<a class="font-['Inter'] text-xs text-[#454652] dark:text-slate-500 hover:text-[#191c1e] dark:hover:text-slate-300 transition-colors" href="#">Terms of Service</a>
+<a class="font-['Inter'] text-xs text-[#454652] dark:text-slate-500 hover:text-[#191c1e] dark:hover:text-slate-300 transition-colors" href="#">Contact Support</a>
+</div>
+<p class="font-['Inter'] text-xs text-[#454652] dark:text-slate-500">© 2024 Editorial Architect CMS. Built for clarity.</p>
+</footer>
+</main>
+</div>
+</body></html>

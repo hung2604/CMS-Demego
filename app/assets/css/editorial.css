@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+  vertical-align: middle;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: max(884px, 100dvh);
+}
+
+.dark body {
+  background-color: rgb(2 6 23);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+}
+
+/* Dark mode: vùng prose Markdown (token typography `prose-editorial` là màu sáng cố định) */
+.dark .prose-editorial {
+  --tw-prose-body: rgb(203 213 225 / 0.95);
+  --tw-prose-headings: rgb(248 250 252);
+  --tw-prose-lead: rgb(148 163 184);
+  --tw-prose-links: rgb(147 197 253);
+  --tw-prose-bold: rgb(248 250 252);
+  --tw-prose-counters: rgb(148 163 184);
+  --tw-prose-bullets: rgb(148 163 184);
+  --tw-prose-hr: rgb(51 65 85);
+  --tw-prose-quotes: rgb(203 213 225);
+  --tw-prose-quote-borders: rgb(59 130 246);
+  --tw-prose-captions: rgb(148 163 184);
+  --tw-prose-code: rgb(248 250 252);
+  --tw-prose-pre-code: rgb(226 232 240);
+  --tw-prose-pre-bg: rgb(15 23 42);
+  --tw-prose-th-borders: rgb(51 65 85);
+  --tw-prose-td-borders: rgb(51 65 85 / 0.6);
+}
+
+.dark .prose-editorial :where(h2):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+  color: rgb(147 197 253);
+}
+
+.dark .prose-editorial :where(h3):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+  color: rgb(248 250 252);
+}
+
+.dark .prose-editorial :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)):hover {
+  color: rgb(191 219 254);
+}
+
+/* Ảnh trong ô bảng Markdown (gallery 3 cột thuần MD) */
+.prose-editorial :where(td) :where(img) {
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  vertical-align: middle;
+}
+
+.prose-editorial :where(table:has(td img)) {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0.75rem 0;
+}
+
+.prose-editorial :where(table:has(td img)) :where(th),
+.prose-editorial :where(table:has(td img)) :where(td) {
+  border: none;
+  padding: 0;
+  vertical-align: top;
+}

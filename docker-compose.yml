@@ -1,0 +1,40 @@
+# CMS-Demego — deploy trên Portainer / Docker Compose
+# 1. Image mặc định: roseluren26/cms-demego:cms (đổi DOCKERHUB_USERNAME nếu cần)
+# 2. Điền biến môi trường Studio + repo Git thật
+
+services:
+  cms-demego:
+    image: ${DOCKERHUB_USERNAME:-roseluren26}/cms-demego:${IMAGE_TAG:-cms}
+    container_name: cms-demego
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "3000"
+      NITRO_HOST: 0.0.0.0
+      NITRO_PORT: "3000"
+
+      # --- Nuxt Studio (production) — bắt buộc nếu dùng /_studio ---
+      STUDIO_GITHUB_CLIENT_ID: ${STUDIO_GITHUB_CLIENT_ID}
+      STUDIO_GITHUB_CLIENT_SECRET: ${STUDIO_GITHUB_CLIENT_SECRET}
+      # Tuỳ chọn: giới hạn email được vào Studio
+      # STUDIO_GITHUB_MODERATORS: "admin@company.com"
+
+      # Repo chứa content (khớp GitHub thật)
+      STUDIO_REPO_OWNER: ${STUDIO_REPO_OWNER}
+      STUDIO_REPO_NAME: ${STUDIO_REPO_NAME}
+      STUDIO_REPO_BRANCH: ${STUDIO_REPO_BRANCH:-main}
+
+      # Vercel Blob / NuxtHub (nếu dùng media external) — bỏ nếu không dùng
+      # BLOB_READ_WRITE_TOKEN: ${BLOB_READ_WRITE_TOKEN}
+      # STUDIO_MEDIA_MAX_BYTES: "524288000"
+
+    # Không dùng wget trong image slim; bật lại nếu thêm curl vào Dockerfile
+    # healthcheck:
+    #   test: ["CMD-SHELL", "node -e \"require('http').get('http://127.0.0.1:3000/',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))\""]
+    #   interval: 30s
+    #   timeout: 5s
+    #   retries: 3
+    #   start_period: 60s

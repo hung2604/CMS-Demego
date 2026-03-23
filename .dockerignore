@@ -1,0 +1,19 @@
+node_modules
+.nuxt
+.output
+.nitro
+.cache
+dist
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+# Không ignore *.md — cần content/**/*.md cho Nuxt Content khi build
+.cursor
+.idea
+.fleet
+.DS_Store
+*.log
+coverage
+terminals
