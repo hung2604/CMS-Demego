@@ -1,12 +1,15 @@
 ---
 title: Bài blog mẫu
 description: Ví dụ nội dung trong thư mục blog — có nhiều mục để thử mục lục bên phải.
+seo:
+  title: Cố gắng làm gì đó
+  description: Cố gắng làm gì đó
 date: 2026-03-23
 ---
 
 # Bài blog mẫu
 
-File này nằm tại `content/blog/bai-mau.md`, URL trên site là **`/blog/bai-mau`**. Cuộn trang và xem cột **Mục lục** (xl): các link bám theo heading bên dưới.
+File này nằm tại `content/blog/bai-mau.md`, URL trên site là `/blog/bai-mau`. Cuộn trang và xem cột **Mục lục** (xl): các link bám theo heading bên dưới.
 
 ## Bắt đầu nhanh
 
