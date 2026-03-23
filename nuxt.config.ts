@@ -30,15 +30,15 @@ export default defineNuxtConfig({
   studio: {
     repository: {
       provider: 'github',
-      owner: process.env.STUDIO_REPO_OWNER ?? 'thay-bang-github-user-cua-ban',
-      repo: process.env.STUDIO_REPO_NAME ?? 'CMS-Demego',
-      branch: process.env.STUDIO_REPO_BRANCH ?? 'main',
+      owner: 'hung2604',
+      repo: 'CMS-Demego',
+      branch: 'master',
     },
     /** Upload ảnh/video qua Blob (không commit file nặng vào Git). Giới hạn mặc định Studio là 10MB. */
     media: {
       external: true,
       // 500MB — chỉnh theo nhu cầu (bytes). Cần driver Blob/R2/S3 hợp lệ trên production.
-      maxFileSize: Number(process.env.STUDIO_MEDIA_MAX_BYTES) || 500 * 1024 * 1024,
+      maxFileSize: 500 * 1024 * 1024,
     },
   },
 })
