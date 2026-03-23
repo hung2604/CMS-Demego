@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   // @nuxthub/core phải đứng trước nuxt-studio (media ngoài Git / video lớn)
   modules: ['@nuxtjs/tailwindcss', '@nuxt/content', '@nuxthub/core', 'nuxt-studio'],
 

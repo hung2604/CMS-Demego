@@ -11,8 +11,9 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-# Studio/Git env tại runtime; build chỉ cần repo placeholder hợp lệ (đã có trong nuxt.config)
+# Giảm tải prerender + tắt devtools trong build để tránh OOM trên Docker ít RAM
 ENV NODE_ENV=production
+ENV NUXT_DOCKER_BUILD=1
 RUN npm run build
 
 # --- Runtime ---
