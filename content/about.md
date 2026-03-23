@@ -1,12 +1,6 @@
 ---
 title: Giới thiệu
 description: Trang ví dụ về Demego CMS — chỉnh sửa nội dung này trong Nuxt Studio hoặc trực tiếp file .md.
-navigation:
-  title: ""
-  description: ""
-seo:
-  title: Cố gắng làm gì đó
-  description: Cố gắng làm gì đó
 ---
 
 # Giới thiệu
@@ -15,7 +9,7 @@ seo:
 
 Bạn có thể:
 
-- Thêm heading, list, link, ảnh (trong `public/`).
+- Thêm heading, list, link, ảnh (trong `public1/`).
 - Dùng frontmatter `title` và `description` cho SEO.
 
 ## Tiêu đề
