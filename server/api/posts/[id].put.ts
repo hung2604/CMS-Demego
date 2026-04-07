@@ -2,6 +2,8 @@ import { ObjectId } from 'mongodb'
 import { z } from 'zod'
 import { sanitizePostContent } from '../../utils/sanitize'
 import { normalizePostNeighborId } from '../../utils/post-neighbors'
+import { applyMenuParentForPost } from '../../utils/post-menu-branch'
+import { syncMenusForPost } from '../../utils/sync-post-menu'
 import { requireAuthSession } from '../../utils/require-auth'
 
 const localeStringSchema = z.object({
@@ -20,7 +22,8 @@ const postUpdateSchema = z.object({
   content: localeStringSchema.optional(),
   excerpt: localeStringSchema.optional(),
   status: z.enum(['draft', 'published']).optional(),
-  menuId: z.string().nullable().optional(),
+  /** Cha của mục menu gắn với bài (tạo mục con nếu bài chưa có menu). */
+  menuParentId: z.string().nullable().optional(),
   prevPostId: z.string().nullable().optional(),
   nextPostId: z.string().nullable().optional(),
   seo: localeSeoSchema.optional()
@@ -33,7 +36,8 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody(event)
   const parsed = postUpdateSchema.parse(body)
-  const data = sanitizePostContent(parsed)
+  const { menuParentId: menuParentPayload, ...postPatch } = parsed
+  const data = sanitizePostContent(postPatch)
   if ('prevPostId' in parsed) {
     (data as Record<string, unknown>).prevPostId = normalizePostNeighborId(parsed.prevPostId, id)
   }
@@ -60,6 +64,12 @@ export default defineEventHandler(async (event) => {
   )
 
   if (!result) throw createError({ statusCode: 404, statusMessage: 'Post not found' })
+
+  if ('menuParentId' in parsed) {
+    await applyMenuParentForPost(db, id, menuParentPayload ?? null)
+  }
+
+  await syncMenusForPost(db, id)
 
   return result
 })

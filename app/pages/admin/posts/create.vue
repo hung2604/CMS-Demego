@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { finalizeBilingualSlugs, toPostSlug } from '~/utils/post-slug'
+import { buildMenuTree } from '../../../utils/menu-tree'
+import { normalizeMenuTitleFields } from '../../../../utils/menu-title'
 
 definePageMeta({ layout: 'admin' })
 
@@ -13,6 +15,37 @@ const langTab = ref<'vi' | 'en'>('vi')
 
 const { data: postsData } = await useFetch('/api/posts', { query: { limit: 200 } })
 const posts = computed(() => (postsData.value as { posts?: unknown[] })?.posts ?? [])
+
+const { data: menusData } = await useFetch<Record<string, unknown>[]>('/api/menus', {
+  default: () => [],
+  transform: (payload) => (Array.isArray(payload) ? payload : [])
+})
+const menus = computed(() => menusData.value ?? [])
+
+function adminMenuLabel (menu: Record<string, unknown>) {
+  const { vi, en } = normalizeMenuTitleFields(menu.title)
+  if (vi && en && vi.trim() !== en.trim()) return `${vi} / ${en}`
+  return vi.trim() || en.trim() || '—'
+}
+
+const menuParentOptions = computed(() => {
+  const tree = buildMenuTree(menus.value as Record<string, unknown>[], true)
+  const acc: { label: string; value: string | null }[] = [
+    { label: t('post.menuParentNone'), value: null }
+  ]
+  function walk (nodes: Record<string, unknown>[], depth: number) {
+    for (const n of nodes) {
+      acc.push({
+        label: `${'— '.repeat(depth)}${adminMenuLabel(n)}`,
+        value: String(n._id)
+      })
+      const ch = n.children as Record<string, unknown>[] | undefined
+      if (ch?.length) walk(ch, depth + 1)
+    }
+  }
+  walk(tree as Record<string, unknown>[], 0)
+  return acc
+})
 
 const neighborPostOptions = computed(() => [
   { label: t('post.neighborNone'), value: null },
@@ -28,7 +61,7 @@ const form = reactive({
   content: { vi: '', en: '' },
   excerpt: { vi: '', en: '' },
   status: 'draft' as 'draft' | 'published',
-  menuId: null as string | null,
+  parentMenuId: null as string | null,
   prevPostId: null as string | null,
   nextPostId: null as string | null,
   seo: {
@@ -102,6 +135,10 @@ async function save() {
           ]"
           class="w-44"
         />
+      </UFormField>
+
+      <UFormField :label="t('post.menuUnderParent')" :description="t('post.menuUnderParentHint')">
+        <USelect v-model="form.parentMenuId" :items="menuParentOptions" class="w-full max-w-xl" />
       </UFormField>
 
       <div class="grid gap-4 sm:grid-cols-2">

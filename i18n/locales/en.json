@@ -107,6 +107,11 @@
     "prevPost": "Previous post",
     "nextPost": "Next post",
     "neighborNone": "None",
+    "menuUnderParent": "Add post under a parent menu item",
+    "menuParentNone": "Do not add to the table of contents",
+    "menuParentRoot": "Top level (no parent item)",
+    "menuUnderParentHint": "Pick a parent — a new child item is created (title from the post) and linked to this post. The parent item stays as-is.",
+    "menuEditParentHint": "Choose the parent for this post’s TOC row (only moves it in the tree; does not replace other items). If the post had no row, picking a parent creates a new child item.",
     "navPrevious": "Previous",
     "navNext": "Next"
   },

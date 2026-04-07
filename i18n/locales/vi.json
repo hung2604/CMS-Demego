@@ -107,6 +107,11 @@
     "prevPost": "Bài viết trước",
     "nextPost": "Bài viết sau",
     "neighborNone": "Không chọn",
+    "menuUnderParent": "Thêm bài vào mục lục (dưới mục cha)",
+    "menuParentNone": "Không thêm vào mục lục",
+    "menuParentRoot": "Cấp gốc mục lục (không có mục cha)",
+    "menuUnderParentHint": "Chọn mục cha — hệ thống tạo một mục con mới (tiêu đề theo bài) và gắn bài vào mục đó. Mục cha không bị thay đổi hay thay bài khác.",
+    "menuEditParentHint": "Chọn mục cha cho hàng mục lục của bài này (chỉ đổi vị trí trong cây; không ghi đè mục khác). Bài chưa có mục: chọn mục cha để tạo mục con mới.",
     "navPrevious": "Trước",
     "navNext": "Tiếp"
   },

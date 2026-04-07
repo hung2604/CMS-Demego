@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { finalizeBilingualSlugs } from '~/utils/post-slug'
+import { buildMenuTree, normalizeMenuParentKey } from '../../../utils/menu-tree'
+import { normalizeMenuTitleFields } from '../../../../utils/menu-title'
 
 definePageMeta({ layout: 'admin' })
 
@@ -22,6 +24,76 @@ useSeoMeta({ title: computed(() => `${t('admin.edit')} - ${raw.value?.title?.vi 
 const { data: postsData } = await useFetch('/api/posts', { query: { limit: 200 } })
 const posts = computed(() => (postsData.value as { posts?: unknown[] })?.posts ?? [])
 
+const { data: menusData } = await useFetch<Record<string, unknown>[]>('/api/menus', {
+  default: () => [],
+  transform: (payload) => (Array.isArray(payload) ? payload : [])
+})
+const menus = computed(() => menusData.value ?? [])
+
+function adminMenuLabel (menu: Record<string, unknown>) {
+  const { vi, en } = normalizeMenuTitleFields(menu.title)
+  if (vi && en && vi.trim() !== en.trim()) return `${vi} / ${en}`
+  return vi.trim() || en.trim() || '—'
+}
+
+function idToStr (v: unknown) {
+  if (v == null || v === '') return null
+  return String(v)
+}
+
+function initialMenuParentForPost (): string | null {
+  const mid = idToStr((post.value as Record<string, unknown> | null)?.menuId)
+  if (!mid) return null
+  const list = menusData.value ?? []
+  const row = list.find(x => String(x._id) === mid)
+  return row ? normalizeMenuParentKey(row.parentId) : null
+}
+
+const postLeafMenuId = computed(() => idToStr(raw.value?.menuId))
+
+const bannedParentMenuIds = computed(() => {
+  const leaf = postLeafMenuId.value
+  if (!leaf) return new Set<string>()
+  const items = menus.value as Record<string, unknown>[]
+  const byParent = new Map<string | null, string[]>()
+  for (const m of items) {
+    const id = String(m._id)
+    const pk = normalizeMenuParentKey(m.parentId)
+    if (!byParent.has(pk)) byParent.set(pk, [])
+    byParent.get(pk)!.push(id)
+  }
+  const banned = new Set<string>()
+  const stack = [leaf]
+  while (stack.length) {
+    const id = stack.pop()!
+    banned.add(id)
+    for (const k of byParent.get(id) ?? []) stack.push(k)
+  }
+  return banned
+})
+
+const menuParentOptions = computed(() => {
+  const tree = buildMenuTree(menus.value as Record<string, unknown>[], true)
+  const banned = bannedParentMenuIds.value
+  const acc: { label: string; value: string | null }[] = [
+    { label: t('post.menuParentRoot'), value: null }
+  ]
+  function walk (nodes: Record<string, unknown>[], depth: number) {
+    for (const n of nodes) {
+      const id = String(n._id)
+      if (banned.has(id)) continue
+      acc.push({
+        label: `${'— '.repeat(depth)}${adminMenuLabel(n)}`,
+        value: id
+      })
+      const ch = n.children as Record<string, unknown>[] | undefined
+      if (ch?.length) walk(ch, depth + 1)
+    }
+  }
+  walk(tree as Record<string, unknown>[], 0)
+  return acc
+})
+
 const neighborPostOptions = computed(() => [
   { label: t('post.neighborNone'), value: null },
   ...posts.value
@@ -34,18 +106,13 @@ const neighborPostOptions = computed(() => [
 
 const langTab = ref<'vi' | 'en'>('vi')
 
-function idToStr(v: unknown) {
-  if (v == null || v === '') return null
-  return String(v)
-}
-
 const form = reactive({
   title: { vi: raw.value?.title?.vi ?? '', en: raw.value?.title?.en ?? '' },
   slug: { vi: raw.value?.slug?.vi ?? '', en: raw.value?.slug?.en ?? '' },
   content: { vi: raw.value?.content?.vi ?? '', en: raw.value?.content?.en ?? '' },
   excerpt: { vi: raw.value?.excerpt?.vi ?? '', en: raw.value?.excerpt?.en ?? '' },
   status: (raw.value?.status ?? 'draft') as 'draft' | 'published',
-  menuId: raw.value?.menuId ?? null,
+  menuParentId: initialMenuParentForPost(),
   prevPostId: idToStr(raw.value?.prevPostId),
   nextPostId: idToStr(raw.value?.nextPostId),
   seo: {
@@ -114,6 +181,10 @@ async function save() {
           ]"
           class="w-44"
         />
+      </UFormField>
+
+      <UFormField :label="t('post.menuUnderParent')" :description="t('post.menuEditParentHint')">
+        <USelect v-model="form.menuParentId" :items="menuParentOptions" class="w-full max-w-xl" />
       </UFormField>
 
       <div class="grid gap-4 sm:grid-cols-2">
