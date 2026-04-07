@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { iconifyNameToUiIcon } from '~/utils/icon-name'
+
 defineOptions({ name: 'EditorialNavTree' })
 
 export type EditorialNavItem = {
@@ -19,36 +21,9 @@ const props = withDefaults(
 
 const route = useRoute()
 
-const materialMap: Record<string, string> = {
-  'i-lucide-rocket': 'rocket_launch',
-  'i-lucide-rocket-launch': 'rocket_launch',
-  'i-lucide-home': 'home',
-  'i-lucide-house': 'home',
-  'i-lucide-book': 'menu_book',
-  'i-lucide-book-open': 'menu_book',
-  'i-lucide-folder': 'folder',
-  'i-lucide-folder-open': 'folder_open',
-  'i-lucide-file': 'description',
-  'i-lucide-file-text': 'description',
-  'i-lucide-newspaper': 'newspaper',
-  'i-lucide-layout': 'dashboard',
-  'i-lucide-settings': 'settings',
-  'i-lucide-wrench': 'build',
-  'i-lucide-api': 'api',
-  'i-lucide-puzzle': 'extension',
-  'i-lucide-lightbulb': 'lightbulb',
-  'i-lucide-mail': 'mail',
-  'i-lucide-phone': 'call',
-  'i-lucide-user': 'person',
-  'i-lucide-users': 'groups',
-  'i-lucide-link': 'link',
-  'i-lucide-external-link': 'open_in_new'
-}
-
-function materialIcon(raw?: string): string {
-  if (!raw) return 'menu_book'
-  const k = raw.trim()
-  return materialMap[k] ?? 'menu_book'
+/** Cùng quy ước tên icon với admin (Nuxt Icon / UIcon). */
+function navUiIcon(raw?: string): string {
+  return iconifyNameToUiIcon(raw)
 }
 
 function isActive(item: EditorialNavItem): boolean {
@@ -91,7 +66,7 @@ const nextDepth = computed(() => props.depth + 1)
             : 'text-ed-on-surface-variant hover:bg-ed-surface-container-low hover:text-ed-on-surface dark:text-slate-400 dark:hover:bg-slate-700/50'
         "
       >
-        <span class="material-symbols-ed text-[1.25rem]">{{ materialIcon(item.icon) }}</span>
+        <UIcon :name="navUiIcon(item.icon)" class="size-5 shrink-0" />
         <span>{{ item.title }}</span>
       </NuxtLink>
 
@@ -106,10 +81,11 @@ const nextDepth = computed(() => props.depth + 1)
           :class="isNested ? 'px-3 py-2 text-[0.8125rem]' : 'text-[0.875rem] leading-6'"
         >
           <div class="flex items-center gap-3">
-            <span
+            <UIcon
               v-if="!isNested"
-              class="material-symbols-ed text-[1.25rem]"
-            >{{ materialIcon(item.icon) }}</span>
+              :name="navUiIcon(item.icon)"
+              class="size-5 shrink-0"
+            />
             <span>{{ item.title }}</span>
           </div>
           <span
@@ -128,7 +104,7 @@ const nextDepth = computed(() => props.depth + 1)
         v-else
         class="flex items-center gap-3 rounded-lg px-4 py-3 text-[0.875rem] text-ed-on-surface-variant/70 dark:text-slate-500"
       >
-        <span class="material-symbols-ed text-[1.25rem]">{{ materialIcon(item.icon) }}</span>
+        <UIcon :name="navUiIcon(item.icon)" class="size-5 shrink-0" />
         <span>{{ item.title }}</span>
       </div>
     </template>

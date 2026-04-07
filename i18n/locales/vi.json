@@ -93,6 +93,7 @@
   "post": {
     "title": "Tiêu đề",
     "slug": "Đường dẫn",
+    "slugBothRequired": "Cần đường dẫn (slug) cho cả Tiếng Việt và English. Điền tiêu đề hoặc slug hai ngôn ngữ, hoặc để hệ thống lấy slug từ bên còn lại khi lưu.",
     "content": "Nội dung",
     "excerpt": "Tóm tắt",
     "status": "Trạng thái",

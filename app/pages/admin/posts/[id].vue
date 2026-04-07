@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { finalizeBilingualSlugs } from '~/utils/post-slug'
+
 definePageMeta({ layout: 'admin' })
 
 const { t } = useI18n()
@@ -65,6 +67,14 @@ async function previewAsVisitor() {
 }
 
 async function save() {
+  const slugs = finalizeBilingualSlugs(form.slug, form.title)
+  if (!slugs) {
+    toast.add({ title: t('post.slugBothRequired'), color: 'error' })
+    return
+  }
+  form.slug.vi = slugs.vi
+  form.slug.en = slugs.en
+
   saving.value = true
   try {
     await $fetch(`/api/posts/${postId}`, { method: 'PUT', body: form })

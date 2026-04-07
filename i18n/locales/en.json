@@ -93,6 +93,7 @@
   "post": {
     "title": "Title",
     "slug": "Slug",
+    "slugBothRequired": "Both Vietnamese and English slugs are required. Enter titles or slugs for both languages, or leave one empty to reuse the other side on save.",
     "content": "Content",
     "excerpt": "Excerpt",
     "status": "Status",

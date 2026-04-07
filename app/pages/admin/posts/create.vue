@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { finalizeBilingualSlugs, toPostSlug } from '~/utils/post-slug'
+
 definePageMeta({ layout: 'admin' })
 
 const { t } = useI18n()
@@ -37,18 +39,8 @@ const form = reactive({
 
 const slugManuallyEdited = reactive({ vi: false, en: false })
 
-function toSlug(val: string) {
-  return val
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/gi, 'd')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-}
-
-watch(() => form.title.vi, (val) => { if (!slugManuallyEdited.vi) form.slug.vi = toSlug(val) })
-watch(() => form.title.en, (val) => { if (!slugManuallyEdited.en) form.slug.en = toSlug(val) })
+watch(() => form.title.vi, (val) => { if (!slugManuallyEdited.vi) form.slug.vi = toPostSlug(val) })
+watch(() => form.title.en, (val) => { if (!slugManuallyEdited.en) form.slug.en = toPostSlug(val) })
 
 const saving = ref(false)
 const { openCustomerPreview } = usePostPreview()
@@ -62,6 +54,14 @@ async function previewAsVisitor() {
 }
 
 async function save() {
+  const slugs = finalizeBilingualSlugs(form.slug, form.title)
+  if (!slugs) {
+    toast.add({ title: t('post.slugBothRequired'), color: 'error' })
+    return
+  }
+  form.slug.vi = slugs.vi
+  form.slug.en = slugs.en
+
   saving.value = true
   try {
     const post = await $fetch('/api/posts', { method: 'POST', body: form })
