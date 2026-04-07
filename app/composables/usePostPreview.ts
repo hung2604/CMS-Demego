@@ -6,6 +6,7 @@ export type PostPreviewPayload = {
   title: string
   content: string
   createdAt?: string | null
+  updatedAt?: string | null
   prev?: PostPreviewNeighbor | null
   next?: PostPreviewNeighbor | null
   locale: 'vi' | 'en'
@@ -47,6 +48,7 @@ export function usePostPreview() {
     }
     posts: PostPreviewListItem[]
     createdAt?: string | Date | null
+    updatedAt?: string | Date | null
   }) {
     const lang = args.langTab
     const prev = resolvePostNeighborForPreview(args.posts, args.form.prevPostId, lang)
@@ -56,10 +58,16 @@ export function usePostPreview() {
       createdAtStr =
         args.createdAt instanceof Date ? args.createdAt.toISOString() : String(args.createdAt)
     }
+    let updatedAtStr: string | null = null
+    if (args.updatedAt != null && args.updatedAt !== '') {
+      updatedAtStr =
+        args.updatedAt instanceof Date ? args.updatedAt.toISOString() : String(args.updatedAt)
+    }
     const payload: PostPreviewPayload = {
       title: args.form.title[lang]?.trim() ? args.form.title[lang] : '…',
       content: args.form.content[lang] ?? '',
       createdAt: createdAtStr,
+      updatedAt: updatedAtStr,
       prev,
       next,
       locale: lang,

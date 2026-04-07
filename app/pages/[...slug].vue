@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { normalizeMenuDocId } from '~/utils/menu-tree'
+
 const { t, locale } = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -16,6 +18,22 @@ const { data: post, error, refresh } = await useFetch(
 if (error.value) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found' })
 }
+
+/** Đồng bộ với sidebar: mở nhánh & highlight mục menu gắn bài (posts.menuId). */
+const editorialActiveMenuId = useState<string | null>('editorialActiveMenuId', () => null)
+
+watch(
+  () => (post.value as { menuId?: unknown } | null)?.menuId,
+  (raw) => {
+    const id = raw != null ? normalizeMenuDocId(raw) : ''
+    editorialActiveMenuId.value = id !== '' ? id : null
+  },
+  { immediate: true }
+)
+
+onUnmounted(() => {
+  editorialActiveMenuId.value = null
+})
 
 useSeoMeta({
   title: computed(() => (post.value as any)?.seo?.title || (post.value as any)?.title),
@@ -41,6 +59,7 @@ watch(locale, async (newLocale) => {
     :title="(post as any).title"
     :content="(post as any).content"
     :created-at="(post as any).createdAt"
+    :updated-at="(post as any).updatedAt"
     :prev="(post as any).prev"
     :next="(post as any).next"
   />

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { iconifyNameToUiIcon } from '~/utils/icon-name'
+import { normalizeMenuDocId } from '~/utils/menu-tree'
 
 defineOptions({ name: 'EditorialNavTree' })
 
@@ -15,8 +16,10 @@ const props = withDefaults(
   defineProps<{
     items: EditorialNavItem[]
     depth?: number
+    /** Mục menu (Mongo _id) gắn với bài đang xem — mở nhánh & active khi slug route lệch. */
+    activeMenuId?: string | null
   }>(),
-  { depth: 0 }
+  { depth: 0, activeMenuId: null }
 )
 
 const route = useRoute()
@@ -26,15 +29,39 @@ function navUiIcon(raw?: string): string {
   return iconifyNameToUiIcon(raw)
 }
 
-function isActive(item: EditorialNavItem): boolean {
+function menuItemId (item: EditorialNavItem): string {
+  return normalizeMenuDocId(item._id)
+}
+
+function isActive (item: EditorialNavItem): boolean {
+  const mid = props.activeMenuId
+  if (mid && menuItemId(item) === normalizeMenuDocId(mid)) return true
   if (!item.slug) return false
   const p = `/${item.slug}`
-  return route.path === p || route.path.startsWith(`${p}/`)
+  const path = route.path.length > 1 ? route.path.replace(/\/$/, '') : route.path
+  return path === p || path.startsWith(`${p}/`)
 }
 
 function hasActiveDescendant(item: EditorialNavItem): boolean {
   if (isActive(item)) return true
   return item.children?.some(hasActiveDescendant) ?? false
+}
+
+/** Mục cha: cùng kiểu highlight với lá khi con (hoặc chính nó) đang xem. */
+function summaryNavClass (item: EditorialNavItem): string {
+  const nested = props.depth > 0
+  const size = nested
+    ? 'px-3 py-2 text-[0.8125rem]'
+    : 'px-4 py-3 text-[0.875rem] leading-6'
+  const layout =
+    'flex cursor-pointer items-center justify-between gap-3 rounded-lg transition-all duration-300 ease-in-out'
+  if (hasActiveDescendant(item)) {
+    const active = nested
+      ? '!text-ed-primary !font-semibold bg-ed-primary/5 dark:text-blue-300'
+      : 'bg-ed-surface-container-lowest font-bold text-ed-primary shadow-sm dark:bg-slate-700 dark:text-blue-300'
+    return `${layout} ${size} ${active}`
+  }
+  return `${layout} ${size} text-ed-on-surface-variant hover:bg-ed-surface-container-low hover:text-ed-on-surface dark:text-slate-400 dark:hover:bg-slate-700/50`
 }
 
 const isNested = computed(() => props.depth > 0)
@@ -77,8 +104,7 @@ const nextDepth = computed(() => props.depth + 1)
         :open="hasActiveDescendant(item)"
       >
         <summary
-          class="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-4 py-3 text-ed-on-surface-variant transition-all duration-300 ease-in-out hover:bg-ed-surface-container-low hover:text-ed-on-surface dark:text-slate-400 dark:hover:bg-slate-700/50"
-          :class="isNested ? 'px-3 py-2 text-[0.8125rem]' : 'text-[0.875rem] leading-6'"
+          :class="summaryNavClass(item)"
         >
           <div class="flex items-center gap-3">
             <UIcon
@@ -96,7 +122,11 @@ const nextDepth = computed(() => props.depth + 1)
           class="mt-1 space-y-1 border-ed-outline-variant/30 pl-2 dark:border-slate-600/40"
           :class="isNested ? 'ml-4 border-l' : 'ml-9 border-l'"
         >
-          <EditorialNavTree :items="item.children!" :depth="nextDepth" />
+          <EditorialNavTree
+            :items="item.children!"
+            :depth="nextDepth"
+            :active-menu-id="activeMenuId"
+          />
         </div>
       </details>
 

@@ -99,6 +99,7 @@
     "status": "Status",
     "createdAt": "Created at",
     "updatedAt": "Updated at",
+    "lastUpdated": "Last updated",
     "langTab": {
       "vi": "Vietnamese",
       "en": "English"

@@ -129,7 +129,8 @@ async function previewAsVisitor() {
     langTab: langTab.value,
     form,
     posts: posts.value,
-    createdAt: raw.value?.createdAt ?? null
+    createdAt: raw.value?.createdAt ?? null,
+    updatedAt: raw.value?.updatedAt ?? null
   })
 }
 

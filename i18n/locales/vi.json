@@ -99,6 +99,7 @@
     "status": "Trạng thái",
     "createdAt": "Ngày tạo",
     "updatedAt": "Cập nhật",
+    "lastUpdated": "Cập nhật lần cuối",
     "langTab": {
       "vi": "Tiếng Việt",
       "en": "English"

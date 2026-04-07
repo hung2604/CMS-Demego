@@ -67,6 +67,7 @@ async function backToEdit() {
         :title="payload.title"
         :content="payload.content"
         :created-at="payload.createdAt"
+        :updated-at="payload.updatedAt"
         :prev="payload.prev"
         :next="payload.next"
       />

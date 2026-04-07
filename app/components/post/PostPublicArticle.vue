@@ -5,9 +5,17 @@ const props = defineProps<{
   title: string
   content: string
   createdAt?: string | Date | null
+  /** Ưu tiên hiển thị trên trang công khai; thiếu thì dùng createdAt. */
+  updatedAt?: string | Date | null
   prev?: { slug: string; title: string } | null
   next?: { slug: string; title: string } | null
 }>()
+
+const articleDate = computed(() => {
+  const u = props.updatedAt
+  if (u != null && u !== '') return u
+  return props.createdAt ?? null
+})
 
 const contentRef = ref<HTMLElement | null>(null)
 const tocItems = ref<{ id: string; title: string }[]>([])
@@ -63,9 +71,22 @@ onMounted(() => {
       </h1>
 
       <div class="mb-8 flex flex-wrap items-center gap-3 text-sm text-ed-on-surface-variant dark:text-slate-400">
-        <time v-if="createdAt" :datetime="new Date(createdAt).toISOString()">
-          {{ t('post.createdAt') }}: {{ new Date(createdAt).toLocaleDateString() }}
-        </time>
+        <div
+          v-if="articleDate"
+          class="inline-flex items-center gap-2 rounded-lg border border-ed-outline-variant/20 bg-ed-surface-container-low/50 px-3 py-1.5 dark:border-slate-600/40 dark:bg-slate-800/50"
+        >
+          <span
+            class="material-symbols-ed shrink-0 text-lg text-ed-primary dark:text-blue-400"
+            aria-hidden="true"
+          >edit</span>
+          <time
+            class="font-medium text-ed-on-surface dark:text-slate-300"
+            :datetime="new Date(articleDate).toISOString()"
+          >
+            {{ t('post.lastUpdated') }}:
+            {{ new Date(articleDate).toLocaleDateString() }}
+          </time>
+        </div>
       </div>
 
       <div

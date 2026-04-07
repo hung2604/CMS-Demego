@@ -24,6 +24,8 @@ watch(
 
 const menuTree = computed(() => buildMenuTree(menus.value, false, menuLoc.value))
 
+const editorialActiveMenuId = useState<string | null>('editorialActiveMenuId', () => null)
+
 function toggleColorMode() {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
@@ -133,7 +135,11 @@ onUnmounted(() => {
           </h3>
         </div>
         <div class="min-h-0 flex-1 overflow-y-auto pb-6">
-          <EditorialNavTree v-if="menuTree.length" :items="menuTree" />
+          <EditorialNavTree
+            v-if="menuTree.length"
+            :items="menuTree"
+            :active-menu-id="editorialActiveMenuId"
+          />
           <p v-else class="px-4 text-sm text-ed-on-surface-variant dark:text-slate-400">
             {{ t('sidebar.noItems') }}
           </p>
@@ -159,7 +165,11 @@ onUnmounted(() => {
           </button>
         </div>
         <div class="min-h-0 flex-1 overflow-y-auto">
-          <EditorialNavTree v-if="menuTree.length" :items="menuTree" />
+          <EditorialNavTree
+            v-if="menuTree.length"
+            :items="menuTree"
+            :active-menu-id="editorialActiveMenuId"
+          />
           <p v-else class="px-4 text-sm text-ed-on-surface-variant">
             {{ t('sidebar.noItems') }}
           </p>
