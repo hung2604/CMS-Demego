@@ -111,12 +111,6 @@ onUnmounted(() => {
           >light_mode</span>
           <span v-else class="material-symbols-ed text-ed-on-surface-variant">dark_mode</span>
         </button>
-        <NuxtLink
-          to="/admin/login"
-          class="hidden rounded-xl bg-gradient-to-r from-ed-primary to-ed-primary-container px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-ed-primary/10 transition-all hover:opacity-90 active:scale-95 sm:inline-block"
-        >
-          {{ t('editorial.signIn') }}
-        </NuxtLink>
       </div>
     </header>
 
@@ -169,15 +163,6 @@ onUnmounted(() => {
           <p v-else class="px-4 text-sm text-ed-on-surface-variant">
             {{ t('sidebar.noItems') }}
           </p>
-        </div>
-        <div class="shrink-0 border-t border-ed-outline-variant/15 p-4 lg:hidden">
-          <NuxtLink
-            to="/admin/login"
-            class="block w-full rounded-xl bg-gradient-to-r from-ed-primary to-ed-primary-container py-2.5 text-center text-sm font-semibold text-white"
-            @click="mobileNavOpen = false"
-          >
-            {{ t('editorial.signIn') }}
-          </NuxtLink>
         </div>
       </aside>
 
