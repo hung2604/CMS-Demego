@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import { iconifyNameToUiIcon } from '~/utils/icon-name'
+
 const { t } = useI18n()
+
+export type PostBreadcrumbCrumb = { title: string; slug?: string; icon?: string }
+
+function crumbUiIcon (raw?: string): string {
+  return iconifyNameToUiIcon(raw)
+}
 
 const props = defineProps<{
   title: string
@@ -9,6 +17,8 @@ const props = defineProps<{
   updatedAt?: string | Date | null
   prev?: { slug: string; title: string } | null
   next?: { slug: string; title: string } | null
+  /** Đường dẫn menu (cùng sidebar); mục cuối hiển thị bằng `title` bài viết. */
+  breadcrumbTrail?: PostBreadcrumbCrumb[] | null
 }>()
 
 const articleDate = computed(() => {
@@ -56,12 +66,47 @@ onMounted(() => {
     class="mx-auto flex max-w-7xl flex-col gap-12 px-4 py-12 sm:px-8 lg:px-12 xl:flex-row"
   >
     <article class="max-w-3xl flex-1">
-      <nav class="mb-8 flex flex-wrap items-center gap-2 text-sm font-medium text-ed-on-surface-variant">
-        <NuxtLink class="transition-colors hover:text-ed-primary dark:hover:text-blue-300" to="/">
-          {{ t('nav.home') }}
-        </NuxtLink>
-        <span class="material-symbols-ed text-xs">chevron_right</span>
-        <span class="text-ed-on-surface dark:text-slate-200">{{ title }}</span>
+      <nav
+        class="mb-8 flex flex-wrap items-center gap-2 text-sm font-medium text-ed-on-surface-variant"
+        :aria-label="t('editorial.breadcrumbNav')"
+      >
+        <template v-if="breadcrumbTrail?.length">
+          <template v-for="(crumb, i) in breadcrumbTrail" :key="`${i}-${crumb.title}`">
+            <span
+              v-if="i > 0"
+              class="material-symbols-ed text-xs"
+              aria-hidden="true"
+            >chevron_right</span>
+            <template v-if="i < breadcrumbTrail.length - 1">
+              <NuxtLink
+                v-if="crumb.slug"
+                class="inline-flex items-center gap-1.5 transition-colors hover:text-ed-primary dark:hover:text-blue-300"
+                :to="`/${crumb.slug}`"
+              >
+                <UIcon :name="crumbUiIcon(crumb.icon)" class="size-4 shrink-0" />
+                {{ crumb.title }}
+              </NuxtLink>
+              <span
+                v-else
+                class="inline-flex items-center gap-1.5 text-ed-on-surface-variant dark:text-slate-400"
+              >
+                <UIcon :name="crumbUiIcon(crumb.icon)" class="size-4 shrink-0" />
+                {{ crumb.title }}
+              </span>
+            </template>
+            <span
+              v-else
+              class="inline-flex items-center gap-1.5 text-ed-on-surface dark:text-slate-200"
+              aria-current="page"
+            >
+              <UIcon :name="crumbUiIcon(crumb.icon)" class="size-4 shrink-0" />
+              {{ title }}
+            </span>
+          </template>
+        </template>
+        <template v-else>
+          <span class="text-ed-on-surface dark:text-slate-200" aria-current="page">{{ title }}</span>
+        </template>
       </nav>
 
       <h1

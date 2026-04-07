@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { normalizeMenuDocId } from '~/utils/menu-tree'
+import { buildMenuTree, findMenuPathById, normalizeMenuDocId } from '~/utils/menu-tree'
 
 const { t, locale } = useI18n()
 const route = useRoute()
@@ -14,6 +14,23 @@ const { data: post, error, refresh } = await useFetch(
   () => `/api/posts/slug/${slug.value}`,
   { query: computed(() => ({ locale: locale.value })) }
 )
+
+const menuLoc = computed(() => (locale.value === 'en' ? 'en' : 'vi') as const)
+const { data: menus } = await useFetch<Record<string, unknown>[]>('/api/menus', {
+  key: 'menus',
+  default: () => [],
+  transform: (payload) => (Array.isArray(payload) ? payload : [])
+})
+const menuTree = computed(() => buildMenuTree(menus.value, false, menuLoc.value))
+
+const breadcrumbTrail = computed(() => {
+  const raw = (post.value as { menuId?: unknown } | null)?.menuId
+  const id = raw != null ? normalizeMenuDocId(raw) : ''
+  if (!id) return null
+  const path = findMenuPathById(menuTree.value, id)
+  if (!path?.length) return null
+  return path.map((n) => ({ title: n.title, slug: n.slug, icon: n.icon }))
+})
 
 if (error.value) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found' })
@@ -62,5 +79,6 @@ watch(locale, async (newLocale) => {
     :updated-at="(post as any).updatedAt"
     :prev="(post as any).prev"
     :next="(post as any).next"
+    :breadcrumb-trail="breadcrumbTrail"
   />
 </template>

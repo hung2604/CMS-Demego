@@ -182,7 +182,8 @@
     "openMenu": "Open table of contents",
     "closeMenu": "Close",
     "toggleTheme": "Toggle light/dark theme",
-    "onThisPage": "On this page"
+    "onThisPage": "On this page",
+    "breadcrumbNav": "Breadcrumb"
   },
   "editor": {
     "undo": "Undo",

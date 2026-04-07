@@ -182,7 +182,8 @@
     "openMenu": "Mở mục lục",
     "closeMenu": "Đóng",
     "toggleTheme": "Đổi giao diện sáng/tối",
-    "onThisPage": "Trên trang này"
+    "onThisPage": "Trên trang này",
+    "breadcrumbNav": "Đường dẫn trang"
   },
   "editor": {
     "undo": "Hoàn tác",

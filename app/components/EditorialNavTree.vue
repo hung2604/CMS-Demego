@@ -76,10 +76,11 @@ const nextDepth = computed(() => props.depth + 1)
       <NuxtLink
         v-if="item.slug && !(item.children?.length) && isNested"
         :to="`/${item.slug}`"
-        class="block rounded-md px-3 py-2 text-[0.8125rem] text-ed-on-surface-variant transition-colors hover:bg-ed-surface-container-low hover:text-ed-primary dark:text-slate-400"
+        class="flex items-center gap-2 rounded-md px-3 py-2 text-[0.8125rem] text-ed-on-surface-variant transition-colors hover:bg-ed-surface-container-low hover:text-ed-primary dark:text-slate-400"
         :class="isActive(item) ? '!text-ed-primary !font-semibold bg-ed-primary/5' : ''"
       >
-        {{ item.title }}
+        <UIcon :name="navUiIcon(item.icon)" class="size-4 shrink-0" />
+        <span>{{ item.title }}</span>
       </NuxtLink>
 
       <!-- Cấp gốc: lá -->
@@ -106,11 +107,13 @@ const nextDepth = computed(() => props.depth + 1)
         <summary
           :class="summaryNavClass(item)"
         >
-          <div class="flex items-center gap-3">
+          <div
+            class="flex items-center"
+            :class="isNested ? 'gap-2' : 'gap-3'"
+          >
             <UIcon
-              v-if="!isNested"
               :name="navUiIcon(item.icon)"
-              class="size-5 shrink-0"
+              :class="isNested ? 'size-4 shrink-0' : 'size-5 shrink-0'"
             />
             <span>{{ item.title }}</span>
           </div>

@@ -66,3 +66,26 @@ export function buildMenuTree (
   }
   return build(null)
 }
+
+/**
+ * DFS: đường đi từ gốc tới nút có _id khớp targetId (dùng cho breadcrumb trùng sidebar).
+ */
+export function findMenuPathById (
+  nodes: MenuTreeNode[],
+  targetId: string
+): MenuTreeNode[] | null {
+  const tid = normalizeMenuDocId(targetId)
+  if (!tid) return null
+  function walk (list: MenuTreeNode[], acc: MenuTreeNode[]): MenuTreeNode[] | null {
+    for (const n of list) {
+      const next = [...acc, n]
+      if (normalizeMenuDocId(n._id) === tid) return next
+      if (n.children?.length) {
+        const found = walk(n.children, next)
+        if (found) return found
+      }
+    }
+    return null
+  }
+  return walk(nodes, [])
+}
