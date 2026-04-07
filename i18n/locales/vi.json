@@ -1,0 +1,218 @@
+{
+  "app": {
+    "name": "CMS Demego",
+    "description": "Hệ thống quản lý nội dung"
+  },
+  "home": {
+    "heroHeadline": "Tài liệu",
+    "scrollToContent": "Xem mục lục",
+    "sectionNav": "Điều hướng",
+    "sectionNavDesc": "Chọn chủ đề trong mục lục để đọc nhanh.",
+    "childPagesCount": "{count} trang con",
+    "sectionPosts": "Mới cập nhật",
+    "sectionPostsDesc": "Các bài đã xuất bản gần đây.",
+    "emptyTitle": "Chưa có nội dung hiển thị",
+    "emptyHint": "Tạo menu và bài viết trong trang quản trị để xây dựng mục lục và trang tài liệu."
+  },
+  "search": {
+    "open": "Tìm kiếm",
+    "placeholder": "Tìm trang hoặc bài viết…",
+    "groupMenus": "Mục lục",
+    "groupPosts": "Bài viết"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "contact": "Liên hệ"
+  },
+  "sidebar": {
+    "title": "Mục lục",
+    "noItems": "Chưa có mục nào"
+  },
+  "footer": {
+    "copyright": "© {year} {siteName}. Bảo lưu mọi quyền."
+  },
+  "auth": {
+    "loginTitle": "Đăng nhập quản trị",
+    "registerTitle": "Đăng ký tài khoản",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "passwordConfirm": "Nhập lại mật khẩu",
+    "nameOptional": "Tên (tuỳ chọn)",
+    "signIn": "Đăng nhập",
+    "signUp": "Đăng ký",
+    "logout": "Đăng xuất",
+    "loginLink": "Đã có tài khoản? Đăng nhập",
+    "registerLink": "Chưa có tài khoản? Đăng ký",
+    "loginFailed": "Đăng nhập thất bại",
+    "registerFailed": "Đăng ký thất bại",
+    "genericError": "Đã có lỗi xảy ra. Thử lại.",
+    "passwordMismatch": "Hai mật khẩu không khớp",
+    "registerDisabledTitle": "Đăng ký đang tắt",
+    "registerDisabledHint": "Bật ADMIN_ALLOW_REGISTER=true trong biến môi trường server để cho phép đăng ký (cân nhắc kỹ trên production).",
+    "errors": {
+      "invalidCredentials": "Email hoặc mật khẩu không đúng.",
+      "registerDisabled": "Đăng ký hiện không được bật.",
+      "emailTaken": "Email đã được sử dụng.",
+      "passwordTooShort": "Mật khẩu tối thiểu 6 ký tự."
+    }
+  },
+  "admin": {
+    "title": "Quản trị",
+    "dashboard": "Tổng quan",
+    "posts": "Bài viết",
+    "menus": "Menu",
+    "storage": "Kho ảnh",
+    "users": "Tài khoản",
+    "usersHint": "Danh sách người dùng đăng nhập admin. Tạo thêm tài khoản qua Đăng ký (nếu bật) hoặc seed.",
+    "usersName": "Tên",
+    "usersYou": "Bạn",
+    "usersCreate": "Thêm tài khoản",
+    "usersCreateTitle": "Tạo tài khoản mới",
+    "userErrors": {
+      "cannotDeleteSelf": "Không thể xóa chính tài khoản đang đăng nhập."
+    },
+    "settings": "Cài đặt",
+    "create": "Tạo mới",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "search": "Tìm kiếm...",
+    "noData": "Không có dữ liệu",
+    "confirmDelete": "Bạn có chắc muốn xóa?",
+    "status": {
+      "draft": "Bản nháp",
+      "published": "Đã xuất bản"
+    },
+    "previewTitle": "Xem trước bài viết",
+    "previewAsVisitor": "Xem trước như khách",
+    "previewMissing": "Không có dữ liệu xem trước. Hãy mở từ trang tạo hoặc sửa bài viết.",
+    "backToEdit": "Quay lại chỉnh sửa"
+  },
+  "post": {
+    "title": "Tiêu đề",
+    "slug": "Đường dẫn",
+    "content": "Nội dung",
+    "excerpt": "Tóm tắt",
+    "status": "Trạng thái",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Cập nhật",
+    "langTab": {
+      "vi": "Tiếng Việt",
+      "en": "English"
+    },
+    "langHint": "Hãy điền nội dung cho cả hai ngôn ngữ để người dùng thấy đúng bản khi đổi ngôn ngữ.",
+    "prevPost": "Bài viết trước",
+    "nextPost": "Bài viết sau",
+    "neighborNone": "Không chọn",
+    "navPrevious": "Trước",
+    "navNext": "Tiếp"
+  },
+  "menu": {
+    "title": "Tiêu đề",
+    "titleVi": "Tiêu đề (Tiếng Việt)",
+    "titleEn": "Tiêu đề (English)",
+    "langHint": "Điền cả hai ngôn ngữ để mục lục hiển thị đúng khi người dùng đổi ngôn ngữ.",
+    "icon": "Biểu tượng",
+    "pickIcon": "Chọn icon",
+    "iconPlaceholder": "i-lucide-file-text",
+    "iconPickerHint": "Gõ tìm (vd: lucide home, mdi folder) rồi Enter. Chọn icon để điền tên dùng cho Nuxt Icon.",
+    "iconSearchPlaceholder": "Tìm icon (lucide, mdi, …)",
+    "parent": "Menu cha",
+    "order": "Thứ tự",
+    "linkedPost": "Bài viết liên kết"
+  },
+  "storage": {
+    "title": "Kho ảnh (Vercel Blob)",
+    "intro": "Xem các file đã tải lên, mở tab mới hoặc sao chép URL công khai để dùng lại trong bài viết hoặc nơi khác.",
+    "prefixLabel": "Nhóm thư mục",
+    "prefixAll": "Toàn bộ CMS (cms/)",
+    "prefixPosts": "Ảnh trong bài viết",
+    "prefixLogo": "Logo trang",
+    "prefixFavicon": "Favicon",
+    "prefixCustom": "Tiền tố tuỳ chỉnh",
+    "useCustomPrefix": "Nhập tiền tố thủ công",
+    "filterName": "Lọc theo đường dẫn (trang đã tải)",
+    "filterPlaceholder": "vd: 1743… hoặc tên file",
+    "copyUrl": "Sao chép URL",
+    "copied": "Đã sao chép URL vào clipboard",
+    "loadMore": "Tải thêm",
+    "empty": "Không có file trong nhóm này.",
+    "refresh": "Làm mới",
+    "openImage": "Mở file trong tab mới"
+  },
+  "settings": {
+    "siteName": "Tên trang",
+    "siteDescription": "Mô tả trang",
+    "logo": "Logo",
+    "favicon": "Favicon",
+    "uploadFile": "Tải lên",
+    "uploadOk": "Đã tải ảnh lên",
+    "urlPlaceholder": "https://... (hoặc dán URL)",
+    "assetHint": "Tải lên lên Vercel Blob hoặc dán URL ảnh có sẵn. Logo/favicon tối đa 4MB.",
+    "clearImage": "Xóa URL",
+    "socialLinks": "Liên kết mạng xã hội",
+    "youtube": "YouTube",
+    "footerText": "Nội dung chân trang"
+  },
+  "locale": {
+    "switch": "Chọn ngôn ngữ"
+  },
+  "editorial": {
+    "searchPlaceholder": "Tìm trang, bài viết hoặc mục trong tài liệu…",
+    "searchShortPlaceholder": "Tìm trong tài liệu…",
+    "searchEmpty": "Không có kết quả phù hợp.",
+    "searchHintNav": "để duyệt",
+    "searchHintEnter": "ENTER",
+    "searchHintSelect": "để chọn",
+    "searchHintClose": "để đóng",
+    "searchTypeHint": "Gõ từ khóa để tìm trong mục lục và bài viết đã xuất bản.",
+    "searchLoading": "Đang tìm…",
+    "searchError": "Không tải được kết quả. Thử lại sau.",
+    "clearSearch": "Xóa ô tìm kiếm",
+    "signIn": "Quản trị",
+    "openMenu": "Mở mục lục",
+    "closeMenu": "Đóng",
+    "toggleTheme": "Đổi giao diện sáng/tối",
+    "onThisPage": "Trên trang này"
+  },
+  "editor": {
+    "undo": "Hoàn tác",
+    "redo": "Làm lại",
+    "paragraph": "Đoạn văn",
+    "bold": "In đậm",
+    "italic": "In nghiêng",
+    "underline": "Gạch chân",
+    "strike": "Gạch ngang",
+    "subscript": "Chỉ số dưới",
+    "superscript": "Chỉ số trên",
+    "textColor": "Màu chữ",
+    "highlight": "Tô sáng",
+    "alignLeft": "Căn trái",
+    "alignCenter": "Căn giữa",
+    "alignRight": "Căn phải",
+    "alignJustify": "Căn đều",
+    "bulletList": "Danh sách bullet",
+    "orderedList": "Danh sách số",
+    "blockquote": "Trích dẫn",
+    "code": "Code nội dòng",
+    "codeBlock": "Khối code",
+    "link": "Liên kết",
+    "image": "Hình ảnh",
+    "imageDialogHint": "Tải lên Vercel Blob hoặc dán URL có sẵn. PNG, JPEG, WebP, GIF, SVG — tối đa 4MB. Sau khi chèn, bấm chọn ảnh trong nội dung rồi kéo các ô vuông ở góc để đổi kích thước (giữ tỉ lệ).",
+    "insertImage": "Chèn ảnh",
+    "table": "Chèn bảng",
+    "hr": "Đường kẻ ngang",
+    "clearFormat": "Xóa định dạng",
+    "chars": "ký tự",
+    "words": "từ"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Có lỗi xảy ra",
+    "success": "Thành công",
+    "back": "Quay lại",
+    "actions": "Hành động"
+  }
+}

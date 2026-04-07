@@ -1,0 +1,316 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+@import "prosemirror-tables/style/tables.css";
+
+/* Editorial (Google Stitch) — chỉ dùng utility ed-* cho site công khai, tách khỏi token Nuxt UI */
+@custom-variant dark (&:where(.dark, .dark *));
+@theme {
+  --font-ed-headline: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-ed-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-ed-background: #f7f9fb;
+  --color-ed-surface: #f7f9fb;
+  --color-ed-on-surface: #191c1e;
+  --color-ed-on-surface-variant: #454652;
+  --color-ed-primary: #003aa0;
+  --color-ed-primary-container: #004fd2;
+  --color-ed-on-primary: #ffffff;
+  --color-ed-on-primary-container: #c4d1ff;
+  --color-ed-secondary: #515f74;
+  --color-ed-secondary-container: #d5e3fc;
+  --color-ed-on-secondary-container: #57657a;
+  --color-ed-tertiary: #004c45;
+  --color-ed-tertiary-container: #00665d;
+  --color-ed-on-tertiary-container: #78e4d6;
+  --color-ed-tertiary-fixed: #89f5e7;
+  --color-ed-tertiary-fixed-dim: #6bd8cb;
+  --color-ed-inverse-surface: #2d3133;
+  --color-ed-inverse-on-surface: #eff1f3;
+  --color-ed-primary-fixed: #dbe1ff;
+  --color-ed-primary-fixed-dim: #b4c5ff;
+  --color-ed-on-primary-fixed: #00174b;
+  --color-ed-surface-container: #eceef0;
+  --color-ed-surface-container-low: #f2f4f6;
+  --color-ed-surface-container-high: #e6e8ea;
+  --color-ed-surface-container-lowest: #ffffff;
+  --color-ed-surface-variant: #e0e3e5;
+  --color-ed-outline: #757684;
+  --color-ed-outline-variant: #c5c5d4;
+  --color-ed-error: #ba1a1a;
+  --color-ed-error-container: #ffdad6;
+  --color-ed-on-error-container: #93000a;
+  --color-ed-surface-tint: #0053db;
+}
+
+.material-symbols-ed {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+}
+
+/* Cầu nối TipTap (.post-richtext) sang token Stitch khi nằm trong vỏ editorial */
+.editorial-site {
+  --ui-primary: var(--color-ed-primary);
+  --ui-bg: var(--color-ed-surface);
+  --ui-text: var(--color-ed-on-surface);
+  --ui-text-highlighted: var(--color-ed-on-surface);
+  --ui-border-accented: var(--color-ed-primary);
+  --ui-bg-muted: var(--color-ed-surface-container-low);
+  --ui-text-toned: var(--color-ed-on-surface-variant);
+  --ui-border: color-mix(in srgb, var(--color-ed-outline-variant) 55%, transparent);
+  --ui-radius: 0.5rem;
+  --ui-border-muted: color-mix(in srgb, var(--color-ed-outline-variant) 35%, transparent);
+  --ui-bg-elevated: var(--color-ed-surface-container-lowest);
+}
+
+.editorial-site details summary::-webkit-details-marker {
+  display: none;
+}
+
+.editorial-site details.editorial-nav-details > summary {
+  list-style: none;
+}
+
+.editorial-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+}
+        
+.dark .editorial-glass {
+  background: rgb(30 41 59 / 0.88);
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-ed-outline-variant) 50%, transparent) transparent;
+}
+
+/**
+ * HTML do TipTap xuất — dùng chung admin editor + trang khách.
+ * Dựa token Nuxt UI v4 (--ui-*). Không phụ thuộc @tailwindcss/typography.
+ */
+.post-richtext {
+  --default-cell-min-width: 5rem;
+  color: var(--ui-text);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.post-richtext :where(h1, h2, h3, h4) {
+  color: var(--ui-text-highlighted);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.post-richtext :where(h1) {
+  font-size: 2rem;
+}
+
+.post-richtext :where(h2) {
+  font-size: 1.5rem;
+}
+
+.post-richtext :where(h3) {
+  font-size: 1.25rem;
+}
+
+.post-richtext :where(h4) {
+  font-size: 1.125rem;
+}
+
+.post-richtext :where(h1:first-child, h2:first-child, h3:first-child, h4:first-child) {
+  margin-top: 0;
+}
+
+.post-richtext :where(p) {
+  margin: 0.75rem 0;
+}
+
+.post-richtext :where(ul) {
+  list-style-type: disc;
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+.post-richtext :where(ol) {
+  list-style-type: decimal;
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+.post-richtext :where(ul ul) {
+  list-style-type: circle;
+  margin: 0.25rem 0;
+}
+
+.post-richtext :where(ol ol, ul ol, ol ul) {
+  margin: 0.25rem 0;
+}
+
+.post-richtext :where(li) {
+  margin: 0.25rem 0;
+}
+
+.post-richtext :where(li > p) {
+  margin: 0.15rem 0;
+}
+
+/* Căn lề do TipTap gắn style inline lên heading/p — không override */
+
+.post-richtext :where(blockquote) {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid var(--ui-border-accented);
+  background: var(--ui-bg-muted);
+  color: var(--ui-text-toned);
+  border-radius: 0 var(--ui-radius) var(--ui-radius) 0;
+}
+
+.post-richtext :where(blockquote p) {
+  margin: 0.35rem 0;
+}
+
+.post-richtext :where(hr) {
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 1px solid var(--ui-border);
+}
+
+.post-richtext :where(strong, b) {
+  font-weight: 700;
+  color: var(--ui-text-highlighted);
+}
+
+.post-richtext :where(em, i) {
+  font-style: italic;
+}
+
+.post-richtext :where(u) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.post-richtext :where(s, strike, del) {
+  text-decoration: line-through;
+}
+
+.post-richtext :where(sub, sup) {
+  font-size: 0.75em;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.post-richtext :where(sup) {
+  top: -0.35em;
+}
+
+.post-richtext :where(sub) {
+  bottom: -0.2em;
+}
+
+.post-richtext :where(:not(pre) > code) {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.875em;
+  background: var(--ui-bg-muted);
+  color: var(--ui-text-toned);
+  padding: 0.125em 0.35em;
+  border-radius: var(--ui-radius);
+  border: 1px solid var(--ui-border-muted);
+}
+
+.post-richtext :where(pre) {
+  margin: 1rem 0;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  background: var(--ui-bg-muted);
+  color: var(--ui-text);
+  border: 1px solid var(--ui-border);
+  border-radius: calc(var(--ui-radius) * 2);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.post-richtext :where(pre code) {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+.post-richtext .tableWrapper {
+  margin: 0.75rem 0;
+}
+
+.post-richtext :where(table) {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0.75rem 0;
+  overflow: hidden;
+}
+
+.post-richtext :where(td, th) {
+  border: 1px solid var(--ui-border);
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.post-richtext :where(th) {
+  background: var(--ui-bg-elevated);
+  font-weight: 600;
+}
+
+.post-richtext .selectedCell::after {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: color-mix(in srgb, var(--ui-primary) 18%, transparent);
+  pointer-events: none;
+}
+
+.post-richtext .column-resize-handle {
+  background-color: color-mix(in srgb, var(--ui-primary) 55%, transparent);
+}
+
+.post-richtext :where(img) {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--ui-radius);
+  margin: 0.75rem 0;
+}
+
+.post-richtext :where(a) {
+  color: var(--ui-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.post-richtext a:hover {
+  opacity: 0.88;
+}
+
+.post-richtext :where(mark) {
+  border-radius: 0.125rem;
+  padding: 0.05em 0.2em;
+}

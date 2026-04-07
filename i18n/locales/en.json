@@ -1,0 +1,218 @@
+{
+  "app": {
+    "name": "CMS Demego",
+    "description": "Content Management System"
+  },
+  "home": {
+    "heroHeadline": "Documentation",
+    "scrollToContent": "Browse contents",
+    "sectionNav": "Navigation",
+    "sectionNavDesc": "Pick a topic from the table of contents to read.",
+    "childPagesCount": "{count} subpages",
+    "sectionPosts": "Recently updated",
+    "sectionPostsDesc": "Latest published articles.",
+    "emptyTitle": "No content yet",
+    "emptyHint": "Add menus and posts in the admin panel to build your docs site."
+  },
+  "search": {
+    "open": "Search",
+    "placeholder": "Find a page or article…",
+    "groupMenus": "Contents",
+    "groupPosts": "Posts"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "sidebar": {
+    "title": "Table of Contents",
+    "noItems": "No items yet"
+  },
+  "footer": {
+    "copyright": "© {year} {siteName}. All rights reserved."
+  },
+  "auth": {
+    "loginTitle": "Admin sign in",
+    "registerTitle": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "passwordConfirm": "Confirm password",
+    "nameOptional": "Name (optional)",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "logout": "Log out",
+    "loginLink": "Already have an account? Sign in",
+    "registerLink": "No account? Register",
+    "loginFailed": "Sign in failed",
+    "registerFailed": "Registration failed",
+    "genericError": "Something went wrong. Please try again.",
+    "passwordMismatch": "Passwords do not match",
+    "registerDisabledTitle": "Registration is disabled",
+    "registerDisabledHint": "Set ADMIN_ALLOW_REGISTER=true in server environment variables to allow registration (use with care in production).",
+    "errors": {
+      "invalidCredentials": "Invalid email or password.",
+      "registerDisabled": "Registration is not enabled.",
+      "emailTaken": "This email is already registered.",
+      "passwordTooShort": "Password must be at least 6 characters."
+    }
+  },
+  "admin": {
+    "title": "Admin",
+    "dashboard": "Dashboard",
+    "posts": "Posts",
+    "menus": "Menus",
+    "storage": "Media",
+    "users": "Users",
+    "usersHint": "Accounts that can sign in to admin. Add more via Register (if enabled) or seed.",
+    "usersName": "Name",
+    "usersYou": "You",
+    "usersCreate": "Add account",
+    "usersCreateTitle": "Create account",
+    "userErrors": {
+      "cannotDeleteSelf": "You cannot delete the account you are logged in with."
+    },
+    "settings": "Settings",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "search": "Search...",
+    "noData": "No data available",
+    "confirmDelete": "Are you sure you want to delete?",
+    "status": {
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "previewTitle": "Post preview",
+    "previewAsVisitor": "Preview as visitor",
+    "previewMissing": "No preview data. Open it from create or edit post.",
+    "backToEdit": "Back to edit"
+  },
+  "post": {
+    "title": "Title",
+    "slug": "Slug",
+    "content": "Content",
+    "excerpt": "Excerpt",
+    "status": "Status",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "langTab": {
+      "vi": "Vietnamese",
+      "en": "English"
+    },
+    "langHint": "Fill in content for both languages so visitors see the correct version when they switch.",
+    "prevPost": "Previous post",
+    "nextPost": "Next post",
+    "neighborNone": "None",
+    "navPrevious": "Previous",
+    "navNext": "Next"
+  },
+  "menu": {
+    "title": "Title",
+    "titleVi": "Title (Vietnamese)",
+    "titleEn": "Title (English)",
+    "langHint": "Enter both languages so the table of contents matches the language visitors select.",
+    "icon": "Icon",
+    "pickIcon": "Pick icon",
+    "iconPlaceholder": "i-lucide-file-text",
+    "iconPickerHint": "Type to search (e.g. lucide home, mdi folder) then Enter. Pick an icon to fill the Nuxt Icon name.",
+    "iconSearchPlaceholder": "Search icons (lucide, mdi, …)",
+    "parent": "Parent menu",
+    "order": "Order",
+    "linkedPost": "Linked post"
+  },
+  "storage": {
+    "title": "Media (Vercel Blob)",
+    "intro": "Browse uploaded files, open in a new tab, or copy the public URL to reuse in posts or elsewhere.",
+    "prefixLabel": "Folder group",
+    "prefixAll": "All CMS files (cms/)",
+    "prefixPosts": "Post images",
+    "prefixLogo": "Site logo",
+    "prefixFavicon": "Favicon",
+    "prefixCustom": "Custom prefix",
+    "useCustomPrefix": "Enter prefix manually",
+    "filterName": "Filter by path (loaded items)",
+    "filterPlaceholder": "e.g. timestamp or filename",
+    "copyUrl": "Copy URL",
+    "copied": "URL copied to clipboard",
+    "loadMore": "Load more",
+    "empty": "No files in this group.",
+    "refresh": "Refresh",
+    "openImage": "Open file in new tab"
+  },
+  "settings": {
+    "siteName": "Site name",
+    "siteDescription": "Site description",
+    "logo": "Logo",
+    "favicon": "Favicon",
+    "uploadFile": "Upload",
+    "uploadOk": "Image uploaded",
+    "urlPlaceholder": "https://... (or paste URL)",
+    "assetHint": "Upload to Vercel Blob or paste an image URL. Max 4MB per file.",
+    "clearImage": "Clear URL",
+    "socialLinks": "Social links",
+    "youtube": "YouTube",
+    "footerText": "Footer text"
+  },
+  "locale": {
+    "switch": "Choose language"
+  },
+  "editorial": {
+    "searchPlaceholder": "Search pages, posts, or docs…",
+    "searchShortPlaceholder": "Search docs…",
+    "searchEmpty": "No matching results.",
+    "searchHintNav": "to navigate",
+    "searchHintEnter": "ENTER",
+    "searchHintSelect": "to select",
+    "searchHintClose": "to close",
+    "searchTypeHint": "Type a keyword to search the table of contents and published posts.",
+    "searchLoading": "Searching…",
+    "searchError": "Could not load results. Please try again.",
+    "clearSearch": "Clear search",
+    "signIn": "Admin",
+    "openMenu": "Open table of contents",
+    "closeMenu": "Close",
+    "toggleTheme": "Toggle light/dark theme",
+    "onThisPage": "On this page"
+  },
+  "editor": {
+    "undo": "Undo",
+    "redo": "Redo",
+    "paragraph": "Paragraph",
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "strike": "Strikethrough",
+    "subscript": "Subscript",
+    "superscript": "Superscript",
+    "textColor": "Text color",
+    "highlight": "Highlight",
+    "alignLeft": "Align left",
+    "alignCenter": "Align center",
+    "alignRight": "Align right",
+    "alignJustify": "Justify",
+    "bulletList": "Bullet list",
+    "orderedList": "Ordered list",
+    "blockquote": "Blockquote",
+    "code": "Inline code",
+    "codeBlock": "Code block",
+    "link": "Link",
+    "image": "Image",
+    "imageDialogHint": "Upload to Vercel Blob or paste an image URL. PNG, JPEG, WebP, GIF, SVG — max 4MB. After inserting, click the image and drag a corner handle to resize (aspect ratio preserved).",
+    "insertImage": "Insert image",
+    "table": "Insert table",
+    "hr": "Horizontal rule",
+    "clearFormat": "Clear formatting",
+    "chars": "characters",
+    "words": "words"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "back": "Back",
+    "actions": "Actions"
+  }
+}
