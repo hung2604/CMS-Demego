@@ -39,10 +39,9 @@ function mapErrorMessage (msg: string | undefined) {
   return te(path) ? t(path) : msg
 }
 
-function setRegisterMode (value: boolean) {
+function exitRegisterMode () {
   const q = { ...route.query } as Record<string, string | string[] | undefined>
-  if (value) q.register = '1'
-  else delete q.register
+  delete q.register
   void router.replace({ path: '/admin/login', query: q })
 }
 
@@ -171,21 +170,12 @@ async function onRegisterSubmit () {
       </form>
     </template>
 
-    <template #footer>
-      <p v-if="!showRegister" class="text-muted text-center text-sm">
+    <template v-if="showRegister" #footer>
+      <p class="text-muted text-center text-sm">
         <button
           type="button"
           class="text-primary font-medium hover:underline"
-          @click="setRegisterMode(true)"
-        >
-          {{ t('auth.registerLink') }}
-        </button>
-      </p>
-      <p v-else class="text-muted text-center text-sm">
-        <button
-          type="button"
-          class="text-primary font-medium hover:underline"
-          @click="setRegisterMode(false)"
+          @click="exitRegisterMode"
         >
           {{ t('auth.loginLink') }}
         </button>
