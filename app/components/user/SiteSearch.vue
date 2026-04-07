@@ -119,6 +119,33 @@ function onGlobalKeydown (e: KeyboardEvent) {
     open.value = !open.value
   }
 }
+
+function escapeRx (s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/** Tách text thành các đoạn để highlight khớp từ khóa (không phân biệt hoa thường). */
+function highlightSegments (text: string, needle: string): { text: string; hit: boolean }[] {
+  const n = needle.trim()
+  if (!n || !text) return [{ text, hit: false }]
+  const re = new RegExp(escapeRx(n), 'gi')
+  const out: { text: string; hit: boolean }[] = []
+  let last = 0
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) {
+      out.push({ text: text.slice(last, m.index), hit: false })
+    }
+    out.push({ text: m[0], hit: true })
+    last = m.index + m[0].length
+  }
+  if (last < text.length) {
+    out.push({ text: text.slice(last), hit: false })
+  }
+  return out.length ? out : [{ text, hit: false }]
+}
+
+const queryTrimmed = computed(() => query.value.trim())
 </script>
 
 <template>
@@ -214,13 +241,31 @@ function onGlobalKeydown (e: KeyboardEvent) {
                     <p
                       class="truncate font-medium text-ed-on-surface group-hover:text-ed-primary dark:text-slate-100"
                     >
-                      {{ item.label }}
+                      <template
+                        v-for="(seg, si) in highlightSegments(item.label, queryTrimmed)"
+                        :key="`${item.id}-t-${si}`"
+                      >
+                        <mark
+                          v-if="seg.hit && seg.text"
+                          class="rounded-sm bg-amber-200/90 px-0.5 text-inherit dark:bg-amber-400/35"
+                        >{{ seg.text }}</mark>
+                        <template v-else-if="seg.text">{{ seg.text }}</template>
+                      </template>
                     </p>
                     <p
                       v-if="item.description"
                       class="mt-0.5 truncate text-xs text-ed-on-surface-variant"
                     >
-                      {{ item.description }}
+                      <template
+                        v-for="(seg, si) in highlightSegments(item.description, queryTrimmed)"
+                        :key="`${item.id}-d-${si}`"
+                      >
+                        <mark
+                          v-if="seg.hit && seg.text"
+                          class="rounded-sm bg-amber-200/90 px-0.5 text-inherit dark:bg-amber-400/35"
+                        >{{ seg.text }}</mark>
+                        <template v-else-if="seg.text">{{ seg.text }}</template>
+                      </template>
                     </p>
                   </div>
                   <span

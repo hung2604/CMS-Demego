@@ -16,6 +16,7 @@ import { Table } from '@tiptap/extension-table'
 import TableRow from '@tiptap/extension-table-row'
 import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
+import { isEmbeddableVideoUrl } from '~/utils/rich-video-embeds'
 
 const model = defineModel<string>({ default: '' })
 
@@ -86,6 +87,12 @@ watch(showImageDialog, (open) => {
 })
 const linkInput = ref('')
 const showLinkDialog = ref(false)
+const videoUrlInput = ref('')
+const showVideoDialog = ref(false)
+
+watch(showVideoDialog, (open) => {
+  if (open) videoUrlInput.value = ''
+})
 
 function setLink() {
   if (!linkInput.value) {
@@ -100,6 +107,27 @@ function setLink() {
 function openLinkDialog() {
   linkInput.value = editor.value?.getAttributes('link').href ?? ''
   showLinkDialog.value = true
+}
+
+function insertVideoEmbed() {
+  const href = videoUrlInput.value.trim()
+  if (!href) return
+  if (!isEmbeddableVideoUrl(href)) {
+    toast.add({ title: t('editor.videoInvalidUrl'), color: 'error' })
+    return
+  }
+  editor.value?.chain().focus().insertContent({
+    type: 'paragraph',
+    content: [
+      {
+        type: 'text',
+        text: href,
+        marks: [{ type: 'link', attrs: { href, rel: 'noopener noreferrer' } }]
+      }
+    ]
+  }).run()
+  showVideoDialog.value = false
+  videoUrlInput.value = ''
 }
 
 function insertImage() {
@@ -253,6 +281,7 @@ const wordCount = computed(() => editor.value?.storage.characterCount.words() ??
       <!-- Insert -->
       <UFieldGroup size="xs">
         <UButton icon="i-lucide-link" variant="ghost" :color="editor?.isActive('link') ? 'primary' : 'neutral'" @click="openLinkDialog" :title="t('editor.link')" />
+        <UButton icon="i-lucide-video" variant="ghost" color="neutral" @click="showVideoDialog = true" :title="t('editor.video')" />
         <UButton icon="i-lucide-image" variant="ghost" color="neutral" @click="showImageDialog = true" :title="t('editor.image')" />
         <UButton icon="i-lucide-table" variant="ghost" color="neutral" @click="insertTable" :title="t('editor.table')" />
         <UButton icon="i-lucide-minus" variant="ghost" color="neutral" @click="editor?.chain().focus().setHorizontalRule().run()" :title="t('editor.hr')" />
@@ -303,6 +332,31 @@ const wordCount = computed(() => editor.value?.storage.characterCount.words() ??
           <div class="flex justify-end gap-2">
             <UButton variant="ghost" color="neutral" @click="showLinkDialog = false">{{ t('admin.cancel') }}</UButton>
             <UButton @click="setLink">{{ t('admin.save') }}</UButton>
+          </div>
+        </div>
+      </template>
+    </UModal>
+
+    <!-- Video (YouTube / Drive) dialog -->
+    <UModal v-model:open="showVideoDialog" :title="t('editor.video')">
+      <template #body>
+        <div class="flex flex-col gap-3 p-4">
+          <UInput
+            v-model="videoUrlInput"
+            placeholder="https://www.youtube.com/watch?v=… / https://drive.google.com/file/d/…"
+            autofocus
+            @keydown.enter="insertVideoEmbed"
+          />
+          <p class="text-xs text-muted">
+            {{ t('editor.videoDialogHint') }}
+          </p>
+          <div class="flex justify-end gap-2">
+            <UButton variant="ghost" color="neutral" @click="showVideoDialog = false">
+              {{ t('admin.cancel') }}
+            </UButton>
+            <UButton :disabled="!videoUrlInput.trim()" @click="insertVideoEmbed">
+              {{ t('editor.insertVideo') }}
+            </UButton>
           </div>
         </div>
       </template>

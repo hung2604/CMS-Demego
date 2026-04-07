@@ -10,7 +10,8 @@ const SANITIZE_OPTIONS: sanitizeHtmlLib.IOptions = {
     'a', 'img',
     'table', 'thead', 'tbody', 'tr', 'th', 'td',
     'hr', 'figure', 'figcaption',
-    'sub', 'sup', 'mark', 'span', 'div'
+    'sub', 'sup', 'mark', 'span', 'div',
+    'iframe'
   ],
   allowedAttributes: {
     '*': [
@@ -20,6 +21,10 @@ const SANITIZE_OPTIONS: sanitizeHtmlLib.IOptions = {
     ],
     a: ['href', 'target', 'rel', 'title', 'class', 'style', 'id'],
     img: ['src', 'alt', 'title', 'width', 'height', 'class', 'style'],
+    iframe: [
+      'src', 'title', 'width', 'height', 'class', 'style',
+      'allow', 'allowfullscreen', 'referrerpolicy', 'loading'
+    ],
     td: ['colspan', 'rowspan', 'class', 'style'],
     th: ['colspan', 'rowspan', 'class', 'style'],
     table: ['class', 'style'],
@@ -30,7 +35,14 @@ const SANITIZE_OPTIONS: sanitizeHtmlLib.IOptions = {
   allowedSchemesByTag: {
     img: ['http', 'https', 'data', 'blob']
   },
-  allowProtocolRelative: false
+  allowProtocolRelative: false,
+  allowedIframeHostnames: [
+    'www.youtube.com',
+    'youtube.com',
+    'www.youtube-nocookie.com',
+    'youtube-nocookie.com',
+    'drive.google.com'
+  ]
 }
 
 export function sanitizeHtml (html: string): string {

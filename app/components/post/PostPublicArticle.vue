@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { iconifyNameToUiIcon } from '~/utils/icon-name'
+import { expandStandaloneVideoEmbeds } from '~/utils/rich-video-embeds'
 
 const { t } = useI18n()
 
@@ -30,6 +31,8 @@ const articleDate = computed(() => {
 const contentRef = ref<HTMLElement | null>(null)
 const tocItems = ref<{ id: string; title: string }[]>([])
 
+const displayContent = computed(() => expandStandaloneVideoEmbeds(props.content))
+
 function rebuildToc() {
   tocItems.value = []
   const el = contentRef.value
@@ -48,7 +51,7 @@ function rebuildToc() {
 }
 
 watch(
-  () => props.content,
+  () => displayContent.value,
   async () => {
     await nextTick()
     rebuildToc()
@@ -137,7 +140,7 @@ onMounted(() => {
       <div
         ref="contentRef"
         class="post-richtext leading-relaxed text-ed-on-surface dark:text-slate-200"
-        v-html="content"
+        v-html="displayContent"
       />
 
       <nav
