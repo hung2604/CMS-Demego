@@ -41,20 +41,22 @@
   --color-ed-surface-tint: #0053db;
 }
 
-.material-symbols-ed {
-  font-family: "Material Symbols Outlined";
-  font-weight: normal;
-  font-style: normal;
-  font-size: 1.5rem;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-  vertical-align: middle;
+/*
+ * Icon (Nuxt Icon, CSS mode) vẽ bằng mask + background-color: currentColor.
+ * High Contrast (forced-colors) và bản in mặc định bỏ màu nền → icon biến mất; giữ lại glyph.
+ */
+@media (forced-colors: active) {
+  .editorial-site .iconify {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+}
+
+@media print {
+  .iconify {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
 
 /* Cầu nối TipTap (.post-richtext) sang token Stitch khi nằm trong vỏ editorial */

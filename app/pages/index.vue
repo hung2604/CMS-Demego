@@ -47,6 +47,9 @@ const firstSectionId = 'noi-dung'
         class="mb-4 font-ed-headline text-4xl font-extrabold tracking-tight text-ed-on-surface dark:text-slate-50 sm:text-5xl"
       >
         {{ siteName }}
+        <span
+          class="mt-3 block text-2xl font-bold tracking-tight text-ed-primary dark:text-blue-300 sm:text-3xl"
+        >{{ t('home.heroSubtitle') }}</span>
       </h1>
       <p class="mb-8 text-lg leading-relaxed text-ed-on-surface-variant dark:text-slate-400">
         {{ siteDescription || t('app.description') }}
@@ -58,14 +61,14 @@ const firstSectionId = 'noi-dung'
           class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-ed-primary to-ed-primary-container px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-ed-primary/10 transition-all hover:opacity-90 active:scale-95"
         >
           {{ menuTree[0].title }}
-          <span class="material-symbols-ed text-lg">arrow_forward</span>
+          <UIcon name="i-material-symbols-arrow-forward" class="size-6 shrink-0" />
         </NuxtLink>
         <a
           :href="`#${firstSectionId}`"
           class="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-ed-primary ring-1 ring-ed-outline-variant/25 transition-colors hover:bg-ed-surface-container-low dark:text-blue-300 dark:ring-slate-600"
         >
           {{ t('home.scrollToContent') }}
-          <span class="material-symbols-ed text-lg">expand_more</span>
+          <UIcon name="i-material-symbols-expand-more" class="size-6 shrink-0" />
         </a>
       </div>
     </header>
@@ -92,7 +95,7 @@ const firstSectionId = 'noi-dung'
             class="group flex flex-col rounded-xl border border-ed-outline-variant/10 bg-ed-surface-container-lowest p-6 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-800/80"
           >
             <div class="mb-4 flex items-start justify-between gap-2">
-              <span class="material-symbols-ed text-2xl text-ed-primary">menu_book</span>
+              <UIcon name="i-material-symbols-menu-book-outline" class="size-6 shrink-0 text-ed-primary" />
               <NuxtLink
                 v-if="menu.slug"
                 :to="`/${menu.slug}`"
@@ -121,7 +124,7 @@ const firstSectionId = 'noi-dung'
                   :to="`/${child.slug}`"
                   class="flex items-center gap-2 text-sm text-ed-on-surface-variant transition-colors hover:text-ed-primary dark:text-slate-400 dark:hover:text-blue-300"
                 >
-                  <span class="material-symbols-ed text-sm opacity-70">chevron_right</span>
+                  <UIcon name="i-material-symbols-chevron-right" class="size-6 shrink-0 opacity-70" />
                   {{ child.title }}
                 </NuxtLink>
                 <span v-else class="flex items-center gap-2 text-sm text-ed-on-surface-variant/80">
@@ -154,7 +157,7 @@ const firstSectionId = 'noi-dung'
             :to="`/${locString(post.slug, lang)}`"
             class="group flex flex-col rounded-xl border border-ed-outline-variant/10 bg-ed-surface-container-lowest p-6 shadow-sm transition-all hover:border-ed-primary/25 hover:shadow-md dark:border-slate-700 dark:bg-slate-800/80"
           >
-            <span class="material-symbols-ed mb-3 text-2xl text-ed-primary">newspaper</span>
+            <UIcon name="i-material-symbols-newspaper" class="mb-3 size-6 shrink-0 text-ed-primary" />
             <h3
               class="font-ed-headline text-lg font-bold text-ed-on-surface group-hover:text-ed-primary dark:text-slate-100"
             >
@@ -181,9 +184,10 @@ const firstSectionId = 'noi-dung'
         v-if="status === 'success' && !menuTree.length && !(recentPosts as any)?.posts?.length"
         class="rounded-xl border border-dashed border-ed-outline-variant/40 bg-ed-surface-container-low/50 px-6 py-16 text-center dark:border-slate-600 dark:bg-slate-800/50"
       >
-        <span class="material-symbols-ed mx-auto mb-4 block text-5xl text-ed-on-surface-variant/50">
-          library_books
-        </span>
+        <UIcon
+          name="i-material-symbols-library-books-outline"
+          class="mx-auto mb-4 block size-6 text-ed-on-surface-variant/50"
+        />
         <p class="font-ed-headline font-medium text-ed-on-surface dark:text-slate-200">
           {{ t('home.emptyTitle') }}
         </p>

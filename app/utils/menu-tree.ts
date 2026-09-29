@@ -37,9 +37,16 @@ export function buildMenuTree (
   locale: MenuLocale = 'vi'
 ): MenuTreeNode[] {
   const items = Array.isArray(raw) ? raw : []
+  // Gom con theo parentId một lần (O(n)) thay vì filter toàn bộ danh sách ở mỗi nút
+  const byParent = new Map<string | null, Record<string, unknown>[]>()
+  for (const item of items) {
+    const key = normalizeMenuParentKey(item.parentId)
+    const siblings = byParent.get(key)
+    if (siblings) siblings.push(item)
+    else byParent.set(key, [item])
+  }
   function build (parentKey: string | null): MenuTreeNode[] {
-    return items
-      .filter((i) => normalizeMenuParentKey(i.parentId) === parentKey)
+    return [...(byParent.get(parentKey) ?? [])]
       .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0))
       .map((item) => {
         const id = normalizeMenuDocId(item._id)

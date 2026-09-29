@@ -75,11 +75,11 @@ onMounted(() => {
       >
         <template v-if="breadcrumbTrail?.length">
           <template v-for="(crumb, i) in breadcrumbTrail" :key="`${i}-${crumb.title}`">
-            <span
+            <UIcon
               v-if="i > 0"
-              class="material-symbols-ed text-xs"
-              aria-hidden="true"
-            >chevron_right</span>
+              name="i-material-symbols-chevron-right"
+              class="size-6 shrink-0"
+            />
             <template v-if="i < breadcrumbTrail.length - 1">
               <NuxtLink
                 v-if="crumb.slug"
@@ -123,10 +123,10 @@ onMounted(() => {
           v-if="articleDate"
           class="inline-flex items-center gap-2 rounded-lg border border-ed-outline-variant/20 bg-ed-surface-container-low/50 px-3 py-1.5 dark:border-slate-600/40 dark:bg-slate-800/50"
         >
-          <span
-            class="material-symbols-ed shrink-0 text-lg text-ed-primary dark:text-blue-400"
-            aria-hidden="true"
-          >edit</span>
+          <UIcon
+            name="i-material-symbols-edit-outline"
+            class="size-6 shrink-0 text-ed-primary dark:text-blue-400"
+          />
           <time
             class="font-medium text-ed-on-surface dark:text-slate-300"
             :datetime="new Date(articleDate).toISOString()"
@@ -153,7 +153,7 @@ onMounted(() => {
           class="group flex flex-col gap-1 rounded-xl border border-ed-outline-variant/25 bg-ed-surface-container-low/40 p-4 transition-colors hover:border-ed-primary/40 hover:bg-ed-surface-container-low dark:border-slate-700 dark:bg-slate-900/40 dark:hover:border-blue-500/40"
         >
           <span class="flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-ed-on-surface-variant dark:text-slate-500">
-            <span class="material-symbols-ed text-sm">arrow_back</span>
+            <UIcon name="i-material-symbols-arrow-back" class="size-6 shrink-0" />
             {{ t('post.navPrevious') }}
           </span>
           <span class="font-ed-headline text-base font-semibold text-ed-on-surface group-hover:text-ed-primary dark:text-slate-100 dark:group-hover:text-blue-300">
@@ -168,7 +168,7 @@ onMounted(() => {
           class="group flex flex-col items-end gap-1 rounded-xl border border-ed-outline-variant/25 bg-ed-surface-container-low/40 p-4 text-right transition-colors hover:border-ed-primary/40 hover:bg-ed-surface-container-low dark:border-slate-700 dark:bg-slate-900/40 dark:hover:border-blue-500/40 sm:col-start-2"
         >
           <span class="flex flex-row-reverse items-center gap-1 text-xs font-bold uppercase tracking-wider text-ed-on-surface-variant dark:text-slate-500">
-            <span class="material-symbols-ed text-sm">arrow_forward</span>
+            <UIcon name="i-material-symbols-arrow-forward" class="size-6 shrink-0" />
             {{ t('post.navNext') }}
           </span>
           <span class="font-ed-headline text-base font-semibold text-ed-on-surface group-hover:text-ed-primary dark:text-slate-100 dark:group-hover:text-blue-300">

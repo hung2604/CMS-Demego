@@ -4,7 +4,7 @@ export default defineEventHandler(async () => {
 
   return settings || {
     _id: 'site',
-    siteName: 'CMS Demego',
+    siteName: 'CMS Demepro',
     siteDescription: '',
     logo: '',
     favicon: '',

@@ -19,10 +19,10 @@ export async function postNeighborNav (
   if (postIdRaw == null || postIdRaw === '') return null
   const idStr = String(postIdRaw)
   if (!ObjectId.isValid(idStr)) return null
-  const doc = await db.collection('posts').findOne({
-    _id: new ObjectId(idStr),
-    status: 'published'
-  })
+  const doc = await db.collection('posts').findOne(
+    { _id: new ObjectId(idStr), status: 'published' },
+    { projection: { title: 1, slug: 1 } }
+  )
   if (!doc) return null
   const title = doc.title?.[lang] ?? doc.title?.vi ?? ''
   const slug = doc.slug?.[lang] ?? doc.slug?.vi ?? ''

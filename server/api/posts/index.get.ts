@@ -27,7 +27,10 @@ export default defineEventHandler(async (event) => {
   }
 
   const [posts, total] = await Promise.all([
-    db.collection('posts').find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).toArray(),
+    db.collection('posts')
+      // Danh sách không cần nội dung bài / SEO — tránh đẩy HTML đầy đủ vào payload SSR
+      .find(filter, { projection: { content: 0, seo: 0 } })
+      .sort({ createdAt: -1 }).skip(skip).limit(limit).toArray(),
     db.collection('posts').countDocuments(filter)
   ])
 

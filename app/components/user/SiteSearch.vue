@@ -163,7 +163,7 @@ const queryTrimmed = computed(() => query.value.trim())
         @keydown="onKeydown"
       >
         <div class="flex items-center gap-3 border-b border-ed-outline-variant/10 p-6 pb-4 sm:gap-4">
-          <span class="material-symbols-ed shrink-0 text-2xl text-ed-primary">search</span>
+          <UIcon name="i-material-symbols-search" class="size-6 shrink-0 text-ed-primary" />
           <div
             class="flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-ed-outline-variant/20 bg-ed-surface-container-low/55 px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] transition-[box-shadow,border-color] focus-within:border-ed-outline-variant/35 focus-within:shadow-[inset_0_0_0_1px_rgba(0,58,160,0.06),inset_0_1px_0_rgba(255,255,255,0.4)] dark:border-slate-600/40 dark:bg-slate-800/55 dark:shadow-none dark:focus-within:border-slate-500/55 dark:focus-within:shadow-[inset_0_0_0_1px_rgba(96,165,250,0.12)]"
           >
@@ -185,7 +185,7 @@ const queryTrimmed = computed(() => query.value.trim())
               :aria-label="t('editorial.clearSearch')"
               @click="clearQuery"
             >
-              <span class="material-symbols-ed text-xl leading-none">close</span>
+              <UIcon name="i-material-symbols-close" class="size-6 shrink-0" />
             </button>
           </div>
           <kbd
@@ -268,9 +268,10 @@ const queryTrimmed = computed(() => query.value.trim())
                       </template>
                     </p>
                   </div>
-                  <span
-                    class="material-symbols-ed text-ed-outline opacity-0 transition-opacity group-hover:opacity-100"
-                  >north_west</span>
+                  <UIcon
+                    name="i-material-symbols-north-west"
+                    class="size-6 shrink-0 text-ed-outline opacity-0 transition-opacity group-hover:opacity-100"
+                  />
                 </NuxtLink>
               </div>
             </section>
@@ -285,8 +286,8 @@ const queryTrimmed = computed(() => query.value.trim())
               <span
                 class="flex items-center justify-center gap-0.5 rounded border border-ed-outline-variant/20 bg-ed-surface-container-lowest px-1.5 py-0.5 shadow-sm dark:bg-slate-900/40"
               >
-                <span class="material-symbols-ed" style="font-size: 14px">arrow_upward</span>
-                <span class="material-symbols-ed" style="font-size: 14px">arrow_downward</span>
+                <UIcon name="i-material-symbols-arrow-upward" class="size-3.5 shrink-0" />
+                <UIcon name="i-material-symbols-arrow-downward" class="size-3.5 shrink-0" />
               </span>
               <span>{{ t('editorial.searchHintNav') }}</span>
             </div>

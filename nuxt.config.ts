@@ -3,21 +3,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
-  app: {
-    head: {
-      link: [
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap'
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap'
-        }
-      ]
-    }
-  },
-
   build: {
     transpile: ['iconify-icon-picker']
   },
@@ -60,8 +45,78 @@ export default defineNuxtConfig({
   },
 
   site: {
-    url: 'https://cms-demego.com',
-    name: 'CMS Demego'
+    url: 'https://cms.demego.vn',
+    name: 'CMS Demepro'
+  },
+
+  /**
+   * Font chữ tự host qua @nuxt/fonts (đi kèm @nuxt/ui) thay cho <link> Google Fonts chặn render.
+   * Manrope/Inter là variable font nên nhiều weight vẫn chỉ tải chung một file cho mỗi subset.
+   */
+  fonts: {
+    defaults: {
+      subsets: ['vietnamese', 'latin-ext', 'latin']
+    },
+    families: [
+      { name: 'Manrope', provider: 'google', weights: [400, 500, 600, 700, 800], styles: ['normal'] },
+      { name: 'Inter', provider: 'google', weights: [400, 500, 600, 700], styles: ['normal', 'italic'] }
+    ]
+  },
+
+  /**
+   * Icon SVG render sẵn khi SSR — không còn phụ thuộc font Material Symbols (hiện chữ "chevron_right"
+   * trước khi font tải xong) hay gọi api.iconify.design lúc render.
+   */
+  icon: {
+    serverBundle: {
+      collections: ['lucide']
+    },
+    clientBundle: {
+      icons: [
+        'lucide:file-text',
+        'material-symbols:arrow-back',
+        'material-symbols:arrow-downward',
+        'material-symbols:arrow-forward',
+        'material-symbols:arrow-upward',
+        'material-symbols:chevron-right',
+        'material-symbols:close',
+        'material-symbols:dark-mode-outline',
+        'material-symbols:edit-outline',
+        'material-symbols:expand-more',
+        'material-symbols:library-books-outline',
+        'material-symbols:light-mode-outline',
+        'material-symbols:menu-book-outline',
+        'material-symbols:menu-open',
+        'material-symbols:newspaper',
+        'material-symbols:north-west',
+        'material-symbols:search'
+      ]
+    },
+    /** Icon ngoài bundle (vd. icon menu chọn từ bộ khác trong admin) chỉ lấy qua /api/_nuxt_icon */
+    fallbackToApi: 'server-only'
+  },
+
+  /** Không dùng ảnh OG động — tắt để bỏ satori/resvg khỏi server bundle và endpoint /_og */
+  ogImage: { enabled: false },
+
+  sitemap: {
+    exclude: ['/admin/**']
+  },
+
+  robots: {
+    disallow: ['/admin']
+  },
+
+  nitro: {
+    vercel: {
+      functions: {
+        /**
+         * MongoDB đặt tại Hà Nội — chạy function ở Hong Kong thay vì mặc định iad1 (Mỹ)
+         * để mỗi truy vấn không phải vượt Thái Bình Dương.
+         */
+        regions: ['hkg1']
+      }
+    }
   },
 
   runtimeConfig: {

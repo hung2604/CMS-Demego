@@ -9,7 +9,7 @@ useSeoMeta({ title: t('admin.settings') })
 const { data: settings } = await useFetch('/api/settings', { key: 'settings' })
 
 const form = reactive({
-  siteName: (settings.value as any)?.siteName ?? 'CMS Demego',
+  siteName: (settings.value as any)?.siteName ?? 'CMS Demepro',
   siteDescription: (settings.value as any)?.siteDescription ?? '',
   logo: (settings.value as any)?.logo ?? '',
   favicon: (settings.value as any)?.favicon ?? '',

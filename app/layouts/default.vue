@@ -14,6 +14,8 @@ const { data: menus } = await useFetch<Record<string, unknown>[]>('/api/menus', 
 
 const searchOpen = ref(false)
 const mobileNavOpen = ref(false)
+/** Cây menu mobile chỉ render sau lần mở đầu tiên — tránh SSR trùng lặp cả cây (sidebar desktop đã có đủ link). */
+const mobileNavReady = ref(false)
 
 watch(
   () => route.fullPath,
@@ -31,6 +33,7 @@ function toggleColorMode() {
 }
 
 watch(mobileNavOpen, open => {
+  if (open) mobileNavReady.value = true
   if (import.meta.client) {
     document.body.style.overflow = open ? 'hidden' : ''
   }
@@ -56,9 +59,10 @@ onUnmounted(() => {
           type="button"
           class="active:scale-95 lg:hidden"
           :aria-label="t('editorial.openMenu')"
+          @pointerdown="mobileNavReady = true"
           @click="mobileNavOpen = true"
         >
-          <span class="material-symbols-ed text-3xl text-ed-primary dark:text-blue-400">menu_open</span>
+          <UIcon name="i-material-symbols-menu-open" class="size-6 shrink-0 align-middle text-ed-primary dark:text-blue-400" />
         </button>
         <NuxtLink
           to="/"
@@ -72,7 +76,7 @@ onUnmounted(() => {
       <div class="mx-4 hidden max-w-xl flex-1 md:flex">
         <div class="relative w-full">
           <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-            <span class="material-symbols-ed text-sm text-ed-on-surface-variant">search</span>
+            <UIcon name="i-material-symbols-search" class="size-6 shrink-0 text-ed-on-surface-variant" />
           </div>
           <button
             type="button"
@@ -98,7 +102,7 @@ onUnmounted(() => {
           :aria-label="t('search.open')"
           @click="searchOpen = true"
         >
-          <span class="material-symbols-ed text-ed-on-surface-variant dark:text-slate-300">search</span>
+          <UIcon name="i-material-symbols-search" class="size-6 shrink-0 align-middle text-ed-on-surface-variant dark:text-slate-300" />
         </button>
         <UserEditorialLocaleSwitch />
         <button
@@ -107,11 +111,17 @@ onUnmounted(() => {
           :aria-label="t('editorial.toggleTheme')"
           @click="toggleColorMode"
         >
-          <span
+          <!-- Dùng dạng "prefix:name": "i-material-symbols-light-…" sẽ bị hiểu là bộ icon material-symbols-light -->
+          <UIcon
             v-if="colorMode.value === 'dark'"
-            class="material-symbols-ed text-ed-on-surface dark:text-slate-200"
-          >light_mode</span>
-          <span v-else class="material-symbols-ed text-ed-on-surface-variant">dark_mode</span>
+            name="i-material-symbols:light-mode-outline"
+            class="size-6 shrink-0 align-middle text-ed-on-surface dark:text-slate-200"
+          />
+          <UIcon
+            v-else
+            name="i-material-symbols-dark-mode-outline"
+            class="size-6 shrink-0 align-middle text-ed-on-surface-variant"
+          />
         </button>
       </div>
     </header>
@@ -150,6 +160,7 @@ onUnmounted(() => {
       <aside
         class="fixed left-0 top-0 z-50 flex h-full w-72 max-w-[85vw] flex-col overflow-hidden border-r border-ed-outline-variant/10 bg-ed-surface-container px-4 pt-20 shadow-[0_12px_32px_rgba(25,28,30,0.06)] transition-transform duration-300 ease-out dark:border-slate-700 dark:bg-slate-800 lg:hidden"
         :class="mobileNavOpen ? 'translate-x-0' : '-translate-x-full'"
+        :inert="!mobileNavOpen"
       >
         <div class="flex shrink-0 items-center justify-between px-2 py-2">
           <h3 class="font-ed-headline text-lg font-bold text-ed-on-surface dark:text-slate-200">
@@ -161,18 +172,20 @@ onUnmounted(() => {
             :aria-label="t('editorial.closeMenu')"
             @click="mobileNavOpen = false"
           >
-            <span class="material-symbols-ed">close</span>
+            <UIcon name="i-material-symbols-close" class="size-6 shrink-0 align-middle" />
           </button>
         </div>
         <div class="min-h-0 flex-1 overflow-y-auto">
-          <EditorialNavTree
-            v-if="menuTree.length"
-            :items="menuTree"
-            :active-menu-id="editorialActiveMenuId"
-          />
-          <p v-else class="px-4 text-sm text-ed-on-surface-variant">
-            {{ t('sidebar.noItems') }}
-          </p>
+          <template v-if="mobileNavReady">
+            <EditorialNavTree
+              v-if="menuTree.length"
+              :items="menuTree"
+              :active-menu-id="editorialActiveMenuId"
+            />
+            <p v-else class="px-4 text-sm text-ed-on-surface-variant">
+              {{ t('sidebar.noItems') }}
+            </p>
+          </template>
         </div>
       </aside>
 

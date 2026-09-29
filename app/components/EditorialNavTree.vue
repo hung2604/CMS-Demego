@@ -117,9 +117,10 @@ const nextDepth = computed(() => props.depth + 1)
             />
             <span>{{ item.title }}</span>
           </div>
-          <span
-            class="material-symbols-ed text-sm transition-transform duration-200 group-open/tree:rotate-90"
-          >chevron_right</span>
+          <UIcon
+            name="i-material-symbols-chevron-right"
+            class="size-6 shrink-0 transition-transform duration-200 group-open/tree:rotate-90"
+          />
         </summary>
         <div
           class="mt-1 space-y-1 border-ed-outline-variant/30 pl-2 dark:border-slate-600/40"

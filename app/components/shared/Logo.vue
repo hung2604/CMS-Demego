@@ -1,18 +1,18 @@
 <script setup lang="ts">
 const { siteName, logo } = useSettings()
 
-const logoSrc = computed(() => {
-  const u = logo.value?.trim()
-  return u && u.length > 0 ? u : '/images/logo.png'
-})
+const customLogo = computed(() => logo.value?.trim() || '')
+const logoSrc = computed(() => customLogo.value || '/images/logo.png')
 </script>
 
 <template>
+  <!-- Logo nằm trên header (above the fold): không lazy-load; logo mặc định có sẵn kích thước để tránh layout shift -->
   <img
     :src="logoSrc"
     :alt="siteName"
+    :width="customLogo ? undefined : 152"
+    :height="customLogo ? undefined : 72"
     class="h-8 w-auto max-h-9 object-contain object-left"
     decoding="async"
-    loading="lazy"
   >
 </template>

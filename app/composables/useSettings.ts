@@ -10,7 +10,7 @@ export function useSettings() {
     key: 'settings'
   })
 
-  const siteName = computed(() => (settings.value as any)?.siteName ?? 'CMS Demego')
+  const siteName = computed(() => (settings.value as any)?.siteName ?? 'CMS Demepro')
   const siteDescription = computed(() => (settings.value as any)?.siteDescription ?? '')
   const logo = computed(() => (settings.value as any)?.logo ?? '')
   const footerText = computed(() => String((settings.value as any)?.footerText ?? '').trim())

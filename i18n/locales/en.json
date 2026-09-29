@@ -1,10 +1,11 @@
 {
   "app": {
-    "name": "CMS Demego",
-    "description": "Content Management System"
+    "name": "CMS Demepro",
+    "description": "User guides, business documentation and know-how to help you get the most out of DemePro."
   },
   "home": {
     "heroHeadline": "Documentation",
+    "heroSubtitle": "Demepro user guide & documentation center",
     "scrollToContent": "Browse contents",
     "sectionNav": "Navigation",
     "sectionNavDesc": "Pick a topic from the table of contents to read.",

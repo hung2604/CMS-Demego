@@ -1,10 +1,11 @@
 {
   "app": {
-    "name": "CMS Demego",
-    "description": "Hệ thống quản lý nội dung"
+    "name": "CMS Demepro",
+    "description": "Hướng dẫn sử dụng, tài liệu nghiệp vụ và kiến thức giúp bạn khai thác DemePro hiệu quả."
   },
   "home": {
     "heroHeadline": "Tài liệu",
+    "heroSubtitle": "Trung tâm tài liệu hướng dẫn sử dụng Demepro",
     "scrollToContent": "Xem mục lục",
     "sectionNav": "Điều hướng",
     "sectionNavDesc": "Chọn chủ đề trong mục lục để đọc nhanh.",

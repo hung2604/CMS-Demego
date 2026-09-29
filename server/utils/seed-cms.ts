@@ -236,8 +236,8 @@ function post (
     status,
     contentVi: vi,
     contentEn: en,
-    seoVi: { title: `${titleVi} | CMS Demego`, description: excerptVi },
-    seoEn: { title: `${titleEn} | CMS Demego`, description: excerptEn }
+    seoVi: { title: `${titleVi} | CMS Demepro`, description: excerptVi },
+    seoEn: { title: `${titleEn} | CMS Demepro`, description: excerptEn }
   }
 }
 

@@ -57,7 +57,7 @@ async function backToEdit() {
         to="/admin/posts"
         class="mt-6 inline-flex items-center gap-2 font-ed-headline text-sm font-semibold text-ed-primary hover:underline dark:text-blue-300"
       >
-        <span class="material-symbols-ed text-lg">arrow_back</span>
+        <UIcon name="i-material-symbols-arrow-back" class="size-6 shrink-0" />
         {{ t('admin.posts') }}
       </NuxtLink>
     </div>
@@ -77,7 +77,7 @@ async function backToEdit() {
         class="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-ed-outline-variant/30 bg-ed-surface-container-lowest px-4 py-2.5 font-ed-headline text-sm font-semibold text-ed-on-surface shadow-lg shadow-ed-on-surface/5 transition hover:border-ed-primary/35 hover:bg-ed-surface-container-low dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:shadow-black/20 dark:hover:border-blue-500/40"
         @click="backToEdit"
       >
-        <span class="material-symbols-ed text-lg">arrow_back</span>
+        <UIcon name="i-material-symbols-arrow-back" class="size-6 shrink-0" />
         {{ t('admin.backToEdit') }}
       </button>
     </template>
