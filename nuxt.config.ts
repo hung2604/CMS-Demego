@@ -124,6 +124,14 @@ export default defineNuxtConfig({
     mongodbDb: process.env.MONGODB_DB || 'cms',
     /** Vercel Blob — upload logo/favicon (chỉ server) */
     blobReadWriteToken: process.env.BLOB_READ_WRITE_TOKEN || '',
+    /** Cloudflare R2 (chỉ server) — đủ 5 biến thì file mới upload lên R2, thiếu thì dùng Vercel Blob */
+    r2: {
+      endpoint: process.env.R2_ENDPOINT || '',
+      bucket: process.env.R2_BUCKET || '',
+      accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
+      secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
+      publicUrl: process.env.R2_PUBLIC_URL || ''
+    },
     /** POST /api/seed trên production: bắt buộc gửi body.token trùng giá trị này */
     seedToken: process.env.SEED_TOKEN || '',
     /** Bật POST /api/auth/register (nên false trên production) */

@@ -1,5 +1,6 @@
 import { put } from '@vercel/blob'
 import { readMultipartFormData } from 'h3'
+import { getR2Config, r2PutObject } from '../../utils/r2'
 import { requireAuthSession } from '../../utils/require-auth'
 
 const MAX_BYTES = 4 * 1024 * 1024
@@ -27,11 +28,12 @@ function safeSegment (name: string): string {
 
 export default defineEventHandler(async (event) => {
   await requireAuthSession(event)
+  const r2 = getR2Config()
   const { blobReadWriteToken } = useRuntimeConfig()
-  if (!blobReadWriteToken) {
+  if (!r2 && !blobReadWriteToken) {
     throw createError({
       statusCode: 503,
-      statusMessage: 'BLOB_READ_WRITE_TOKEN chưa cấu hình'
+      statusMessage: 'Chưa cấu hình R2_* hoặc BLOB_READ_WRITE_TOKEN'
     })
   }
 
@@ -78,6 +80,11 @@ export default defineEventHandler(async (event) => {
       ? 'cms/posts'
       : 'cms/settings/logo'
   const pathname = `${prefix}/${Date.now()}-${safeSegment(filePart.filename)}`
+
+  // File mới lên R2 khi đã cấu hình; file cũ vẫn ở Vercel Blob (URL trong bài không đổi)
+  if (r2) {
+    return { url: await r2PutObject(r2, pathname, filePart.data, mime) }
+  }
 
   const blob = await put(pathname, filePart.data, {
     access: 'public',

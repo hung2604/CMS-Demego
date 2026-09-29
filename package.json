@@ -33,6 +33,7 @@
     "@tiptap/starter-kit": "^3.22.2",
     "@tiptap/vue-3": "^3.22.2",
     "@vercel/blob": "^2.3.3",
+    "aws4fetch": "^1.0.20",
     "iconify-icon-picker": "^1.0.3",
     "mongodb": "^7.1.1",
     "nuxt": "^4.4.2",

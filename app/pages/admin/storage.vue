@@ -20,6 +20,12 @@ const PREFIX_OPTIONS = [
   { value: 'cms/settings/favicon/', labelKey: 'storage.prefixFavicon' }
 ] as const
 
+type StorageSource = 'r2' | 'vercel'
+
+/** R2 = file mới upload; Vercel Blob = file cũ (vẫn dùng trong bài viết) */
+const source = ref<StorageSource | undefined>(undefined)
+const sources = ref<StorageSource[]>([])
+
 const prefix = ref<string>('cms/')
 const customPrefix = ref('')
 const useCustomPrefix = ref(false)
@@ -57,11 +63,14 @@ async function loadPage (reset: boolean) {
   error.value = null
   try {
     const res = await $fetch<{
+      source: StorageSource
+      sources: StorageSource[]
       blobs: BlobRow[]
       cursor?: string
       hasMore: boolean
     }>('/api/storage/blobs', {
       query: {
+        source: source.value,
         prefix: effectivePrefix.value,
         limit: 48,
         ...(reset ? {} : { cursor: cursor.value })
@@ -74,6 +83,8 @@ async function loadPage (reset: boolean) {
     }
     cursor.value = res.cursor
     hasMore.value = res.hasMore
+    sources.value = res.sources
+    source.value = res.source
   } catch (e: unknown) {
     const msg = e && typeof e === 'object' && 'data' in e
       ? String((e as { data?: { statusMessage?: string } }).data?.statusMessage ?? '')
@@ -89,6 +100,12 @@ async function loadPage (reset: boolean) {
 watch(effectivePrefix, () => {
   loadPage(true)
 })
+
+function selectSource (v: StorageSource) {
+  if (v === source.value) return
+  source.value = v
+  loadPage(true)
+}
 
 watch(useCustomPrefix, v => {
   if (v) customPrefix.value = prefix.value
@@ -130,6 +147,23 @@ async function copyUrl (url: string) {
       </p>
 
       <div class="flex flex-col gap-4 lg:flex-row lg:items-end">
+        <UFormField
+          v-if="sources.length > 1"
+          :label="t('storage.sourceLabel')"
+          class="min-w-[200px]"
+        >
+          <USelectMenu
+            :model-value="source"
+            value-key="value"
+            :items="sources.map(s => ({
+              value: s,
+              label: t(s === 'r2' ? 'storage.sourceR2' : 'storage.sourceVercel')
+            }))"
+            class="w-full"
+            @update:model-value="selectSource"
+          />
+        </UFormField>
+
         <UFormField
           v-if="!useCustomPrefix"
           :label="t('storage.prefixLabel')"
