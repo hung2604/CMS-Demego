@@ -231,6 +231,7 @@
     "insertVideo": "Insert video",
     "videoInvalidUrl": "Only YouTube or Google Drive file links are supported.",
     "table": "Insert table",
+    "tableResizeHint": "Drag a column edge to resize",
     "hr": "Horizontal rule",
     "clearFormat": "Clear formatting",
     "chars": "characters",

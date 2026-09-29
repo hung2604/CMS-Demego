@@ -8,7 +8,7 @@ const SANITIZE_OPTIONS: sanitizeHtmlLib.IOptions = {
     'ul', 'ol', 'li',
     'blockquote', 'pre', 'code',
     'a', 'img',
-    'table', 'thead', 'tbody', 'tr', 'th', 'td',
+    'table', 'thead', 'tbody', 'tr', 'th', 'td', 'colgroup', 'col',
     'hr', 'figure', 'figcaption',
     'sub', 'sup', 'mark', 'span', 'div',
     'iframe'
@@ -25,12 +25,15 @@ const SANITIZE_OPTIONS: sanitizeHtmlLib.IOptions = {
       'src', 'title', 'width', 'height', 'class', 'style',
       'allow', 'allowfullscreen', 'referrerpolicy', 'loading'
     ],
-    td: ['colspan', 'rowspan', 'class', 'style'],
-    th: ['colspan', 'rowspan', 'class', 'style'],
+    // colwidth + colgroup/col: độ rộng cột kéo trong editor (TipTap đọc lại từ colwidth khi mở bài)
+    td: ['colspan', 'rowspan', 'colwidth', 'class', 'style'],
+    th: ['colspan', 'rowspan', 'colwidth', 'class', 'style'],
+    col: ['span', 'width', 'style'],
     table: ['class', 'style'],
     figure: ['class', 'style'],
     figcaption: ['class', 'style']
   },
+  selfClosing: [...sanitizeHtmlLib.defaults.selfClosing, 'col'],
   allowedSchemes: ['http', 'https', 'mailto', 'tel'],
   allowedSchemesByTag: {
     img: ['http', 'https', 'data', 'blob']

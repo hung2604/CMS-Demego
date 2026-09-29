@@ -231,6 +231,7 @@
     "insertVideo": "Chèn video",
     "videoInvalidUrl": "Chỉ chấp nhận link YouTube hoặc link tệp Google Drive.",
     "table": "Chèn bảng",
+    "tableResizeHint": "Kéo mép cột để đổi độ rộng",
     "hr": "Đường kẻ ngang",
     "clearFormat": "Xóa định dạng",
     "chars": "ký tự",

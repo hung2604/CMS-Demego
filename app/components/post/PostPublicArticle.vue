@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { iconifyNameToUiIcon } from '~/utils/icon-name'
 import { expandStandaloneVideoEmbeds } from '~/utils/rich-video-embeds'
+import { wrapTablesForScroll } from '~/utils/rich-tables'
 
 const { t } = useI18n()
 
@@ -34,7 +35,9 @@ const tocItems = ref<{ id: string; title: string }[]>([])
 // Đọc nhãn một lần (giống nhau khi SSR và hydrate) — đổi ngôn ngữ không render lại cả nội dung;
 // enhanceMedia() cập nhật nhãn nút theo ngôn ngữ hiện tại.
 const expandLabel = t('post.expandVideo')
-const displayContent = computed(() => expandStandaloneVideoEmbeds(props.content, { expandLabel }))
+const displayContent = computed(() =>
+  wrapTablesForScroll(expandStandaloneVideoEmbeds(props.content, { expandLabel }))
+)
 
 /** Bấm ảnh → lightbox; nút trên video → xem lớn / toàn màn hình */
 const videoCloseRef = ref<HTMLElement | null>(null)

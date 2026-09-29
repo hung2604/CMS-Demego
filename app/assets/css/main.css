@@ -265,6 +265,17 @@
   overflow: hidden;
 }
 
+/* Trang khách: table (độ rộng cột kéo trong editor) rộng hơn cột bài viết → cuộn ngang thay vì bị cắt */
+.post-richtext .post-table-scroll {
+  max-width: 100%;
+  margin: 0.75rem 0;
+  overflow-x: auto;
+}
+
+.post-richtext .post-table-scroll > table {
+  margin: 0;
+}
+
 .post-richtext :where(td, th) {
   border: 1px solid var(--ui-border);
   padding: 0.5rem 0.75rem;

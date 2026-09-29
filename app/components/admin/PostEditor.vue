@@ -297,6 +297,7 @@ const wordCount = computed(() => editor.value?.storage.characterCount.words() ??
           <UButton label="- Row" variant="ghost" color="error" size="xs" @click="editor?.chain().focus().deleteRow().run()" />
           <UButton label="Del table" variant="ghost" color="error" size="xs" @click="editor?.chain().focus().deleteTable().run()" />
         </UFieldGroup>
+        <span class="text-muted hidden text-xs xl:inline">{{ t('editor.tableResizeHint') }}</span>
       </template>
 
       <div class="ml-auto" />
