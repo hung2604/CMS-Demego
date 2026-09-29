@@ -19,7 +19,9 @@
     "open": "Search",
     "placeholder": "Find a page or article…",
     "groupMenus": "Contents",
-    "groupPosts": "Posts"
+    "groupPosts": "Posts",
+    "scopeLabel": "Search scope",
+    "scopeAll": "All"
   },
   "nav": {
     "home": "Home",
@@ -103,6 +105,7 @@
     "lastUpdated": "Last updated",
     "zoomImage": "Zoom image",
     "expandVideo": "Enlarge video",
+    "closeVideo": "Close video",
     "viewerClose": "Close",
     "viewerZoom": "Zoom in / out",
     "viewerPrev": "Previous image",
@@ -135,6 +138,8 @@
     "iconPickerHint": "Type to search (e.g. lucide home, mdi folder) then Enter. Pick an icon to fill the Nuxt Icon name.",
     "iconSearchPlaceholder": "Search icons (lucide, mdi, …)",
     "parent": "Parent menu",
+    "addChild": "Add submenu",
+    "addChildOf": "Add submenu to “{parent}”",
     "order": "Order",
     "linkedPost": "Linked post"
   },

@@ -20,6 +20,8 @@ const menuTree = computed(() => buildMenuTree(menus.value, true))
 
 const showForm = ref(false)
 const editingMenu = ref<any>(null)
+/** Nhãn menu cha khi mở form từ nút "Thêm menu con" (hiển thị ở tiêu đề form) */
+const childParentLabel = ref<string | null>(null)
 
 const form = reactive({
   titleVi: '',
@@ -46,10 +48,23 @@ function resetForm() {
   form.order = 0
   form.postId = null
   editingMenu.value = null
+  childParentLabel.value = null
 }
 
 function openCreate() {
   resetForm()
+  showForm.value = true
+}
+
+/** Tạo menu con: điền sẵn menu cha, thứ tự = cuối danh sách con hiện có */
+function openCreateChild(parent: any) {
+  resetForm()
+  form.parentId = String(parent._id)
+  const siblings: any[] = parent.children ?? []
+  form.order = siblings.length
+    ? Math.max(...siblings.map(c => Number(c.order) || 0)) + 1
+    : 0
+  childParentLabel.value = adminMenuLabel(parent as Record<string, unknown>)
   showForm.value = true
 }
 
@@ -112,19 +127,35 @@ async function deleteMenu(id: string) {
   }
 }
 
-const parentOptions = computed(() => {
-  const items = (menus.value as any[]) ?? []
-  return [
-    { label: '-- None --', value: null },
-    ...items
-      .filter(m => !editingMenu.value || m._id !== editingMenu.value._id)
-      .map(m => ({ label: adminMenuLabel(m as Record<string, unknown>), value: m._id }))
-  ]
+type PickerOption = { label: string; value: string | null; description?: string }
+
+/**
+ * Menu cha theo thứ tự cây; description = đường dẫn cha (phân biệt menu trùng tên, tìm theo nhánh).
+ * Khi sửa: bỏ chính menu đó và các menu con của nó (tránh tạo vòng lặp).
+ */
+const parentOptions = computed<PickerOption[]>(() => {
+  const acc: PickerOption[] = [{ label: '-- None --', value: null }]
+  const editingId = editingMenu.value ? String(editingMenu.value._id) : null
+  function walk (nodes: any[], path: string[]) {
+    for (const n of nodes) {
+      const id = String(n._id)
+      if (id === editingId) continue
+      const label = adminMenuLabel(n as Record<string, unknown>)
+      acc.push({ label, value: id, description: path.length ? path.join(' › ') : undefined })
+      if (n.children?.length) walk(n.children, [...path, label])
+    }
+  }
+  walk(menuTree.value, [])
+  return acc
 })
 
-const postOptions = computed(() => [
+const postOptions = computed<PickerOption[]>(() => [
   { label: '-- None --', value: null },
-  ...posts.value.map((p: any) => ({ label: p.title, value: p._id }))
+  ...posts.value.map((p: any) => ({
+    label: p.title?.vi || p.title?.en || '—',
+    value: String(p._id),
+    description: p.slug?.vi ? `/${p.slug.vi}` : undefined
+  }))
 ])
 
 watch(() => form.titleVi, (val) => {
@@ -163,6 +194,15 @@ watch(() => form.titleVi, (val) => {
                 </div>
               </div>
               <div class="flex items-center gap-1">
+                <UButton
+                  icon="i-lucide-plus"
+                  variant="ghost"
+                  size="xs"
+                  color="primary"
+                  :aria-label="t('menu.addChild')"
+                  :title="t('menu.addChild')"
+                  @click="openCreateChild(menu)"
+                />
                 <UButton icon="i-lucide-pencil" variant="ghost" size="xs" color="neutral" @click="openEdit(menu)" />
                 <UButton icon="i-lucide-trash-2" variant="ghost" size="xs" color="error" @click="deleteMenu(menu._id)" />
               </div>
@@ -173,6 +213,7 @@ watch(() => form.titleVi, (val) => {
                 :menus="menu.children as Record<string, unknown>[]"
                 @edit="openEdit($event)"
                 @delete="deleteMenu($event)"
+                @add-child="openCreateChild($event)"
               />
             </div>
           </UCard>
@@ -192,7 +233,12 @@ watch(() => form.titleVi, (val) => {
       <template #content>
         <div class="p-6 space-y-4">
           <h3 class="text-lg font-semibold">
-            {{ editingMenu ? t('admin.edit') : t('admin.create') }} {{ t('admin.menus') }}
+            <template v-if="childParentLabel">
+              {{ t('menu.addChildOf', { parent: childParentLabel }) }}
+            </template>
+            <template v-else>
+              {{ editingMenu ? t('admin.edit') : t('admin.create') }} {{ t('admin.menus') }}
+            </template>
           </h3>
 
           <p class="text-sm text-muted">
@@ -216,7 +262,13 @@ watch(() => form.titleVi, (val) => {
           </UFormField>
 
           <UFormField :label="t('menu.parent')">
-            <USelect v-model="form.parentId" :items="parentOptions" class="w-full" />
+            <USelectMenu
+              v-model="form.parentId"
+              :items="parentOptions"
+              value-key="value"
+              :filter-fields="['label', 'description']"
+              class="w-full"
+            />
           </UFormField>
 
           <UFormField :label="t('menu.order')">
@@ -224,7 +276,13 @@ watch(() => form.titleVi, (val) => {
           </UFormField>
 
           <UFormField :label="t('menu.linkedPost')">
-            <USelect v-model="form.postId" :items="postOptions" class="w-full" />
+            <USelectMenu
+              v-model="form.postId"
+              :items="postOptions"
+              value-key="value"
+              :filter-fields="['label', 'description']"
+              class="w-full"
+            />
           </UFormField>
 
           <div class="flex justify-end gap-2 pt-2">

@@ -12,7 +12,10 @@ defineProps<{
 defineEmits<{
   edit: [menu: AdminMenuRow]
   delete: [id: string]
+  addChild: [parent: AdminMenuRow]
 }>()
+
+const { t } = useI18n()
 
 function adminMenuLabel (menu: Record<string, unknown>) {
   const { vi, en } = normalizeMenuTitleFields(menu.title)
@@ -34,6 +37,15 @@ function adminMenuLabel (menu: Record<string, unknown>) {
         </div>
         <div class="flex items-center gap-1">
           <UButton
+            icon="i-lucide-plus"
+            variant="ghost"
+            size="xs"
+            color="primary"
+            :aria-label="t('menu.addChild')"
+            :title="t('menu.addChild')"
+            @click="$emit('addChild', menu)"
+          />
+          <UButton
             icon="i-lucide-pencil"
             variant="ghost"
             size="xs"
@@ -54,6 +66,7 @@ function adminMenuLabel (menu: Record<string, unknown>) {
           :menus="menu.children"
           @edit="$emit('edit', $event)"
           @delete="$emit('delete', $event)"
+          @add-child="$emit('addChild', $event)"
         />
       </div>
     </div>

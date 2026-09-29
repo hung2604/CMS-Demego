@@ -31,18 +31,21 @@ const articleDate = computed(() => {
 const contentRef = ref<HTMLElement | null>(null)
 const tocItems = ref<{ id: string; title: string }[]>([])
 
-const displayContent = computed(() =>
-  expandStandaloneVideoEmbeds(props.content, { expandLabel: t('post.expandVideo') })
-)
+// Đọc nhãn một lần (giống nhau khi SSR và hydrate) — đổi ngôn ngữ không render lại cả nội dung;
+// enhanceMedia() cập nhật nhãn nút theo ngôn ngữ hiện tại.
+const expandLabel = t('post.expandVideo')
+const displayContent = computed(() => expandStandaloneVideoEmbeds(props.content, { expandLabel }))
 
-/** Bấm ảnh → lightbox; nút trên video → xem lớn */
+/** Bấm ảnh → lightbox; nút trên video → xem lớn / toàn màn hình */
+const videoCloseRef = ref<HTMLElement | null>(null)
 const {
   expandedVideo,
   enhanceMedia,
+  resetMedia,
   collapseVideo,
   onContentClick,
   onContentKeydown
-} = useArticleMediaViewer(contentRef)
+} = useArticleMediaViewer(contentRef, videoCloseRef)
 
 function rebuildToc() {
   tocItems.value = []
@@ -64,8 +67,8 @@ function rebuildToc() {
 watch(
   () => displayContent.value,
   async () => {
-    // v-html thay toàn bộ DOM nội dung → bỏ trạng thái video đang phóng to
-    collapseVideo()
+    // v-html thay toàn bộ DOM nội dung → đóng lightbox / video đang phóng to
+    resetMedia()
     await nextTick()
     rebuildToc()
     enhanceMedia()
@@ -225,13 +228,14 @@ onMounted(() => {
     <div
       v-if="expandedVideo"
       class="fixed inset-0 z-[69] bg-black/85 backdrop-blur-sm"
-      @click="collapseVideo"
+      @click="collapseVideo()"
     >
       <button
+        ref="videoCloseRef"
         type="button"
-        class="absolute right-3 top-3 flex size-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-        :aria-label="t('post.viewerClose')"
-        @click.stop="collapseVideo"
+        class="absolute right-3 top-3 flex size-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-white"
+        :aria-label="t('post.closeVideo')"
+        @click.stop="collapseVideo()"
       >
         <UIcon name="i-material-symbols-close" class="size-6 shrink-0" />
       </button>

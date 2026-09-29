@@ -13,6 +13,23 @@ type SearchPayload = {
 
 const query = ref('')
 const result = ref<SearchPayload | null>(null)
+
+/** Phạm vi tìm do người dùng chọn — nhớ lựa chọn gần nhất trên trình duyệt này */
+type SearchScope = 'all' | 'menus' | 'posts'
+const SCOPE_STORAGE_KEY = 'site-search-scope'
+const scope = ref<SearchScope>('all')
+const scopeOptions = computed(() => [
+  { value: 'all' as const, label: t('search.scopeAll'), count: (result.value?.menus.length ?? 0) + (result.value?.posts.length ?? 0) },
+  { value: 'menus' as const, label: t('search.groupMenus'), count: result.value?.menus.length ?? 0 },
+  { value: 'posts' as const, label: t('search.groupPosts'), count: result.value?.posts.length ?? 0 }
+])
+
+function setScope (v: SearchScope) {
+  scope.value = v
+  try {
+    localStorage.setItem(SCOPE_STORAGE_KEY, v)
+  } catch {}
+}
 const loading = ref(false)
 const fetchError = ref(false)
 
@@ -71,10 +88,10 @@ const groups = computed(() => {
   const r = result.value
   if (!r) return [] as { id: string; label: string; items: { id: string; label: string; to: string; description?: string }[] }[]
   const out: { id: string; label: string; items: { id: string; label: string; to: string; description?: string }[] }[] = []
-  if (r.menus?.length) {
+  if (r.menus?.length && scope.value !== 'posts') {
     out.push({ id: 'menus', label: t('search.groupMenus'), items: r.menus })
   }
-  if (r.posts?.length) {
+  if (r.posts?.length && scope.value !== 'menus') {
     out.push({ id: 'posts', label: t('search.groupPosts'), items: r.posts })
   }
   return out
@@ -106,6 +123,10 @@ function onKeydown (e: KeyboardEvent) {
 
 onMounted(() => {
   window.addEventListener('keydown', onGlobalKeydown)
+  try {
+    const saved = localStorage.getItem(SCOPE_STORAGE_KEY)
+    if (saved === 'all' || saved === 'menus' || saved === 'posts') scope.value = saved
+  } catch {}
 })
 
 onUnmounted(() => {
@@ -162,7 +183,7 @@ const queryTrimmed = computed(() => query.value.trim())
         class="editorial-glass flex max-h-[min(870px,90vh)] w-full max-w-3xl flex-col overflow-hidden rounded-xl border border-ed-outline-variant/10 shadow-[0_12px_32px_rgba(25,28,30,0.06)]"
         @keydown="onKeydown"
       >
-        <div class="flex items-center gap-3 border-b border-ed-outline-variant/10 p-6 pb-4 sm:gap-4">
+        <div class="flex flex-wrap items-center gap-3 border-b border-ed-outline-variant/10 p-6 pb-4 sm:flex-nowrap sm:gap-4">
           <UIcon name="i-material-symbols-search" class="size-6 shrink-0 text-ed-primary" />
           <div
             class="flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-ed-outline-variant/20 bg-ed-surface-container-low/55 px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] transition-[box-shadow,border-color] focus-within:border-ed-outline-variant/35 focus-within:shadow-[inset_0_0_0_1px_rgba(0,58,160,0.06),inset_0_1px_0_rgba(255,255,255,0.4)] dark:border-slate-600/40 dark:bg-slate-800/55 dark:shadow-none dark:focus-within:border-slate-500/55 dark:focus-within:shadow-[inset_0_0_0_1px_rgba(96,165,250,0.12)]"
@@ -186,6 +207,31 @@ const queryTrimmed = computed(() => query.value.trim())
               @click="clearQuery"
             >
               <UIcon name="i-material-symbols-close" class="size-6 shrink-0" />
+            </button>
+          </div>
+          <!-- Lọc phạm vi: mobile xuống dòng riêng, desktop nằm cạnh ô tìm kiếm -->
+          <div
+            class="order-last flex w-full shrink-0 rounded-xl border border-ed-outline-variant/20 bg-ed-surface-container-low/55 p-0.5 sm:order-none sm:w-auto dark:border-slate-600/40 dark:bg-slate-800/55"
+            role="radiogroup"
+            :aria-label="t('search.scopeLabel')"
+          >
+            <button
+              v-for="opt in scopeOptions"
+              :key="opt.value"
+              type="button"
+              role="radio"
+              :aria-checked="scope === opt.value"
+              class="flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-[0.625rem] px-3 py-1.5 text-xs font-semibold transition-colors sm:flex-none"
+              :class="scope === opt.value
+                ? 'bg-ed-surface-container-lowest text-ed-primary shadow-sm dark:bg-slate-600 dark:text-blue-200'
+                : 'text-ed-on-surface-variant hover:text-ed-on-surface dark:text-slate-400 dark:hover:text-slate-200'"
+              @click="setScope(opt.value)"
+            >
+              {{ opt.label }}
+              <span
+                v-if="hasQuery && result"
+                class="rounded-full bg-ed-surface-container-high px-1.5 text-[10px] leading-4 tabular-nums dark:bg-slate-700"
+              >{{ opt.count }}</span>
             </button>
           </div>
           <kbd

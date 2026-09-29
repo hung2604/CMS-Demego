@@ -19,7 +19,9 @@
     "open": "Tìm kiếm",
     "placeholder": "Tìm trang hoặc bài viết…",
     "groupMenus": "Mục lục",
-    "groupPosts": "Bài viết"
+    "groupPosts": "Bài viết",
+    "scopeLabel": "Phạm vi tìm kiếm",
+    "scopeAll": "Tất cả"
   },
   "nav": {
     "home": "Trang chủ",
@@ -103,6 +105,7 @@
     "lastUpdated": "Cập nhật lần cuối",
     "zoomImage": "Phóng to ảnh",
     "expandVideo": "Phóng to video",
+    "closeVideo": "Đóng video",
     "viewerClose": "Đóng",
     "viewerZoom": "Phóng to / thu nhỏ",
     "viewerPrev": "Ảnh trước",
@@ -135,6 +138,8 @@
     "iconPickerHint": "Gõ tìm (vd: lucide home, mdi folder) rồi Enter. Chọn icon để điền tên dùng cho Nuxt Icon.",
     "iconSearchPlaceholder": "Tìm icon (lucide, mdi, …)",
     "parent": "Menu cha",
+    "addChild": "Thêm menu con",
+    "addChildOf": "Thêm menu con cho “{parent}”",
     "order": "Thứ tự",
     "linkedPost": "Bài viết liên kết"
   },

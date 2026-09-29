@@ -336,6 +336,10 @@
   outline-offset: 2px;
 }
 
+.dark .post-media-zoom :where(img:focus-visible) {
+  outline-color: #60a5fa;
+}
+
 /* Nút "Phóng to" trên khung video */
 .post-richtext .post-embed-expand {
   position: absolute;
@@ -360,6 +364,10 @@
   background: rgb(0 0 0 / 0.8);
 }
 
+.post-richtext .post-embed-expand[hidden] {
+  display: none;
+}
+
 .post-richtext .post-embed-expand svg {
   width: 1.25rem;
   height: 1.25rem;
@@ -378,6 +386,13 @@
   border: 0;
   border-radius: 0.75rem;
   box-shadow: 0 24px 64px rgb(0 0 0 / 0.5);
+}
+
+/* Màn hình thấp (điện thoại ngang, không có Fullscreen API): dùng tối đa chiều cao, chừa lề 2 bên cho nút đóng */
+@media (max-height: 499px) {
+  .post-richtext .post-embed-video.is-expanded {
+    width: min(calc(100vw - 7rem), calc((100dvh - 1rem) * 16 / 9));
+  }
 }
 
 .post-richtext .post-embed-video.is-expanded .post-embed-expand,

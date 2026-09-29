@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const { t } = useI18n()
+import { en as uiEn, vi as uiVi } from '@nuxt/ui/locale'
+
+const { t, locale } = useI18n()
+/** Chuỗi của component Nuxt UI (ô tìm kiếm trong dropdown, "Không có dữ liệu"…) theo ngôn ngữ trang */
+const uiLocale = computed(() => (locale.value === 'en' ? uiEn : uiVi))
 const { siteName, siteDescription } = useSettings()
 
 useSeoMeta({
@@ -9,7 +13,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <UApp>
+  <UApp :locale="uiLocale">
     <NuxtRouteAnnouncer />
     <NuxtLayout>
       <NuxtPage />

@@ -185,15 +185,15 @@ async function save() {
       </UFormField>
 
       <UFormField :label="t('post.menuUnderParent')" :description="t('post.menuEditParentHint')">
-        <USelect v-model="form.menuParentId" :items="menuParentOptions" class="w-full max-w-xl" />
+        <USelectMenu v-model="form.menuParentId" :items="menuParentOptions" value-key="value" class="w-full max-w-xl" />
       </UFormField>
 
       <div class="grid gap-4 sm:grid-cols-2">
         <UFormField :label="t('post.prevPost')">
-          <USelect v-model="form.prevPostId" :items="neighborPostOptions" class="w-full" />
+          <USelectMenu v-model="form.prevPostId" :items="neighborPostOptions" value-key="value" class="w-full" />
         </UFormField>
         <UFormField :label="t('post.nextPost')">
-          <USelect v-model="form.nextPostId" :items="neighborPostOptions" class="w-full" />
+          <USelectMenu v-model="form.nextPostId" :items="neighborPostOptions" value-key="value" class="w-full" />
         </UFormField>
       </div>
 
