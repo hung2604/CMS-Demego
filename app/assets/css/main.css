@@ -322,6 +322,84 @@
   border: 0;
 }
 
+/* Trang khách: bấm ảnh để phóng to (PhotoSwipe — useArticleMediaViewer) */
+.post-media-zoom :where(img) {
+  cursor: zoom-in;
+}
+
+.post-media-zoom :where(a img) {
+  cursor: pointer;
+}
+
+.post-media-zoom :where(img:focus-visible) {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 2px;
+}
+
+/* Nút "Phóng to" trên khung video */
+.post-richtext .post-embed-expand {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: rgb(0 0 0 / 0.55);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.post-richtext .post-embed-expand:hover,
+.post-richtext .post-embed-expand:focus-visible {
+  background: rgb(0 0 0 / 0.8);
+}
+
+.post-richtext .post-embed-expand svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Video đang phóng to: chỉ đổi vị trí khung (iframe giữ nguyên → không tải lại, không dừng) */
+.post-richtext .post-embed-video.is-expanded {
+  position: fixed;
+  z-index: 70;
+  top: 50%;
+  left: 50%;
+  width: min(calc(100vw - 1.5rem), calc((100dvh - 8rem) * 16 / 9));
+  max-height: none;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  border: 0;
+  border-radius: 0.75rem;
+  box-shadow: 0 24px 64px rgb(0 0 0 / 0.5);
+}
+
+.post-richtext .post-embed-video.is-expanded .post-embed-expand,
+.post-richtext .post-embed-video:fullscreen .post-embed-expand {
+  display: none;
+}
+
+.post-richtext .post-embed-video:fullscreen {
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+}
+
+/* Giữ chỗ cho khung video khi nó đang phóng to */
+.post-richtext .post-embed-placeholder {
+  width: 100%;
+  margin: 1.25rem 0;
+  aspect-ratio: 16 / 9;
+  max-height: min(70vh, 720px);
+}
+
 .post-richtext :where(a) {
   color: var(--ui-primary);
   text-decoration: underline;

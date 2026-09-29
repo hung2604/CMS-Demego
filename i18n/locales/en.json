@@ -101,6 +101,13 @@
     "createdAt": "Created at",
     "updatedAt": "Updated at",
     "lastUpdated": "Last updated",
+    "zoomImage": "Zoom image",
+    "expandVideo": "Enlarge video",
+    "viewerClose": "Close",
+    "viewerZoom": "Zoom in / out",
+    "viewerPrev": "Previous image",
+    "viewerNext": "Next image",
+    "viewerError": "The image could not be loaded",
     "langTab": {
       "vi": "Vietnamese",
       "en": "English"

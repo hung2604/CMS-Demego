@@ -101,6 +101,13 @@
     "createdAt": "Ngày tạo",
     "updatedAt": "Cập nhật",
     "lastUpdated": "Cập nhật lần cuối",
+    "zoomImage": "Phóng to ảnh",
+    "expandVideo": "Phóng to video",
+    "viewerClose": "Đóng",
+    "viewerZoom": "Phóng to / thu nhỏ",
+    "viewerPrev": "Ảnh trước",
+    "viewerNext": "Ảnh sau",
+    "viewerError": "Không tải được ảnh",
     "langTab": {
       "vi": "Tiếng Việt",
       "en": "English"

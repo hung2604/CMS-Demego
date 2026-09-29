@@ -31,7 +31,18 @@ const articleDate = computed(() => {
 const contentRef = ref<HTMLElement | null>(null)
 const tocItems = ref<{ id: string; title: string }[]>([])
 
-const displayContent = computed(() => expandStandaloneVideoEmbeds(props.content))
+const displayContent = computed(() =>
+  expandStandaloneVideoEmbeds(props.content, { expandLabel: t('post.expandVideo') })
+)
+
+/** Bấm ảnh → lightbox; nút trên video → xem lớn */
+const {
+  expandedVideo,
+  enhanceMedia,
+  collapseVideo,
+  onContentClick,
+  onContentKeydown
+} = useArticleMediaViewer(contentRef)
 
 function rebuildToc() {
   tocItems.value = []
@@ -53,14 +64,20 @@ function rebuildToc() {
 watch(
   () => displayContent.value,
   async () => {
+    // v-html thay toàn bộ DOM nội dung → bỏ trạng thái video đang phóng to
+    collapseVideo()
     await nextTick()
     rebuildToc()
+    enhanceMedia()
   },
   { immediate: true }
 )
 
 onMounted(() => {
-  nextTick(() => rebuildToc())
+  nextTick(() => {
+    rebuildToc()
+    enhanceMedia()
+  })
 })
 </script>
 
@@ -139,7 +156,9 @@ onMounted(() => {
 
       <div
         ref="contentRef"
-        class="post-richtext leading-relaxed text-ed-on-surface dark:text-slate-200"
+        class="post-richtext post-media-zoom leading-relaxed text-ed-on-surface dark:text-slate-200"
+        @click="onContentClick"
+        @keydown="onContentKeydown"
         v-html="displayContent"
       />
 
@@ -198,5 +217,24 @@ onMounted(() => {
         </ul>
       </div>
     </aside>
+
+    <!--
+      Nền tối khi video đang phóng to (khung video z-[70] nằm trên).
+      Không Teleport ra body: UApp là stacking context riêng (isolate) nên nền ở body sẽ che luôn video.
+    -->
+    <div
+      v-if="expandedVideo"
+      class="fixed inset-0 z-[69] bg-black/85 backdrop-blur-sm"
+      @click="collapseVideo"
+    >
+      <button
+        type="button"
+        class="absolute right-3 top-3 flex size-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+        :aria-label="t('post.viewerClose')"
+        @click.stop="collapseVideo"
+      >
+        <UIcon name="i-material-symbols-close" class="size-6 shrink-0" />
+      </button>
+    </div>
   </div>
 </template>

@@ -6,6 +6,26 @@
 const WRAP_OPEN = '<div class="post-embed-video">'
 const WRAP_CLOSE = '</div>'
 
+export type VideoEmbedOptions = {
+  /** Có nhãn → thêm nút "Phóng to" trên khung video (trang khách, xem useArticleMediaViewer) */
+  expandLabel?: string
+}
+
+function escapeAttr (s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+/** Icon material-symbols:open-in-full (SVG nội tuyến — nằm trong v-html nên không dùng được UIcon) */
+function expandButton (label?: string): string {
+  if (!label) return ''
+  const l = escapeAttr(label)
+  return `<button type="button" class="post-embed-expand" data-embed-expand aria-label="${l}" title="${l}"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 21v-8h2v4.6L17.6 5H13V3h8v8h-2V6.4L6.4 19H11v2z"/></svg></button>`
+}
+
 function decodeHref (raw: string): string {
   return raw
     .replace(/&amp;/g, '&')
@@ -56,14 +76,14 @@ function extractGdriveFileId (url: string): string | null {
   }
 }
 
-function iframeYoutube (videoId: string): string {
+function iframeYoutube (videoId: string, opts: VideoEmbedOptions): string {
   const src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`
-  return `${WRAP_OPEN}<iframe src="${src}" class="post-embed-iframe" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>${WRAP_CLOSE}`
+  return `${WRAP_OPEN}${expandButton(opts.expandLabel)}<iframe src="${src}" class="post-embed-iframe" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>${WRAP_CLOSE}`
 }
 
-function iframeGdrive (fileId: string): string {
+function iframeGdrive (fileId: string, opts: VideoEmbedOptions): string {
   const src = `https://drive.google.com/file/d/${encodeURIComponent(fileId)}/preview`
-  return `${WRAP_OPEN}<iframe src="${src}" class="post-embed-iframe" title="Google Drive preview" allow="autoplay" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>${WRAP_CLOSE}`
+  return `${WRAP_OPEN}${expandButton(opts.expandLabel)}<iframe src="${src}" class="post-embed-iframe" title="Google Drive preview" allow="autoplay" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>${WRAP_CLOSE}`
 }
 
 function isOnlyAnchor (inner: string): boolean {
@@ -74,7 +94,7 @@ function isOnlyAnchor (inner: string): boolean {
 /**
  * Thay các đoạn `<p>…</p>` chỉ chứa một link tới YouTube / Drive bằng iframe.
  */
-export function expandStandaloneVideoEmbeds (html: string): string {
+export function expandStandaloneVideoEmbeds (html: string, opts: VideoEmbedOptions = {}): string {
   if (!html || !html.includes('<a ')) return html
 
   return html.replace(/<p([^>]*)>([\s\S]*?)<\/p>/gi, (full, _attrs: string, inner: string) => {
@@ -83,9 +103,9 @@ export function expandStandaloneVideoEmbeds (html: string): string {
     if (!hm?.[1]) return full
     const href = decodeHref(hm[1])
     const yt = extractYoutubeId(href)
-    if (yt) return iframeYoutube(yt)
+    if (yt) return iframeYoutube(yt, opts)
     const gd = extractGdriveFileId(href)
-    if (gd) return iframeGdrive(gd)
+    if (gd) return iframeGdrive(gd, opts)
     return full
   })
 }
